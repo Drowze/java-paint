@@ -139,6 +139,7 @@ public class Janela extends JFrame { // implements Cloneable
         btnPonto.addActionListener (new DesenhoDePonto());
         btnLinha.addActionListener (new DesenhoDeReta ());
         btnCirculo.addActionListener(new DesenhoDeCirculo());
+        btnElipse.addActionListener(new DesenhoDeElipse());
 
         JPanel     pnlBotoes = new JPanel();
         FlowLayout flwBotoes = new FlowLayout(); 
@@ -225,6 +226,18 @@ public class Janela extends JFrame { // implements Cloneable
                                 esperaInicioCirculo = false;
                                 esperaFimCirculo = false;
                             }
+                            else
+                                if(esperaInicioElipse){
+                                    p1 = new Ponto (e.getX(), e.getY(), corAtual);
+                                    esperaInicioElipse = false;
+                                    esperaFimElipse = true;
+                                    statusBar1.setText("Mensagem: clique o ponto final do raio do circulo");
+                                }
+                                else
+                                    if(esperaFimElipse){
+                                        esperaInicioElipse = false;
+                                        esperaFimElipse = false;
+                                    }
         }
         
         public void mouseReleased (MouseEvent e) {
@@ -254,6 +267,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimReta    = false;
             esperaInicioCirculo = false;
             esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
 
             statusBar1.setText("Mensagem: clique o local do ponto desejado");
         }
@@ -266,6 +281,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimReta    = false;
             esperaInicioCirculo = false;
             esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
 
             statusBar1.setText("Mensagem: clique o ponto inicial da reta");
         }
@@ -278,8 +295,23 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimReta    = false;
             esperaInicioCirculo = true;
             esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
 
             statusBar1.setText("Mensagem: clique o ponto central do circulo");
+        }
+    }
+    private class DesenhoDeElipse implements ActionListener {
+        public void actionPerformed (ActionEvent e) {
+            esperaPonto      = false;
+            esperaInicioReta = false;
+            esperaFimReta    = false;
+            esperaInicioCirculo = true;
+            esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
+
+            statusBar1.setText("Mensagem: clique o ponto central da Elipse");
         }
     }
 
