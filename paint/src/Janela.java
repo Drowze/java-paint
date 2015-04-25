@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.*;
-import java.lang.Math;
+import java.lang.*;
 
 public class Janela extends JFrame { // implements Cloneable
 
@@ -142,6 +142,7 @@ public class Janela extends JFrame { // implements Cloneable
         btnLinha.addActionListener (new DesenhoDeReta ());
         btnCirculo.addActionListener(new DesenhoDeCirculo());
         btnElipse.addActionListener(new DesenhoDeElipse());
+        btnCores.addActionListener(new EscolhaCorContorno());
 
         JPanel     pnlBotoes = new JPanel();
         FlowLayout flwBotoes = new FlowLayout(); 
@@ -332,6 +333,7 @@ public class Janela extends JFrame { // implements Cloneable
             statusBar1.setText("Mensagem: clique o ponto central do circulo");
         }
     }
+    
     private class DesenhoDeElipse implements ActionListener {
         public void actionPerformed (ActionEvent e) {
             esperaPonto      = false;
@@ -344,6 +346,14 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFim2Elipse = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da Elipse");
+        }
+    }
+    
+    private class EscolhaCorContorno implements ActionListener {
+        public void actionPerformed (ActionEvent e) {
+            JColorChooser jc = new JColorChooser();
+            Color corContorno = jc.showDialog(btnCores, "Selecione a cor", Color.yellow);
+            corAtual = corContorno;
         }
     }
 
