@@ -6,11 +6,15 @@ public class Circulo extends Figura {
     protected int   raio;
 	
     public Circulo (int x, int y, int r) {
-        this (x, y, r, Color.BLACK);
+        this (x, y, r, Color.BLACK, Color.WHITE);
     }
 	
     public Circulo (int x, int y, int r, Color cor) {
-        super (cor);
+        this (x, y, r, cor, Color.WHITE);
+    }
+    
+    public Circulo (int x, int y, int r, Color cor, Color preen) {
+        super(cor,preen);
 
         this.centro = new Ponto (x,y);
         this.raio   = r;
@@ -33,6 +37,7 @@ public class Circulo extends Figura {
         this.centro = new Ponto (x,y,cor);
         this.raio   = r;
         this.cor    = cor;
+        //aqui vamos ter que pegar também a cor do preenchimento
     }
 
     public void setCentro (int x, int y) {
@@ -52,9 +57,10 @@ public class Circulo extends Figura {
     }
 
     public void torneSeVisivel (Graphics g) {
+        g.setColor (this.preen);
+        g.fillOval (this.centro.getX()-raio, this.centro.getY()-raio, 2*raio, 2*raio);
         g.setColor (this.cor);
         g.drawOval (this.centro.getX()-raio, this.centro.getY()-raio, 2*raio, 2*raio);
-			
     }
 
     public String toString() {
@@ -69,6 +75,12 @@ public class Circulo extends Figura {
                ":" +
                this.getCor().getGreen() +
                ":" +
-               this.getCor().getBlue();
+               this.getCor().getBlue() + 
+                ":" +
+               this.getPreen().getRed() + //daqui pra baixo pra salvar a cor do preenchimento
+                ":" +
+               this.getPreen().getGreen() + //sujeito a erros lol
+                ":" +
+               this.getPreen().getBlue();
     }
 }

@@ -32,6 +32,7 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioElipse, esperaFimElipse, esperaFim2Elipse;
 
     private Color corAtual = Color.black;
+    private Color corAtualPreen = Color.white;
     private Ponto p1, p2;
     double raio, raio2;
     
@@ -154,6 +155,8 @@ public class Janela extends JFrame { // implements Cloneable
         btnCirculo.addActionListener(new DesenhoDeCirculo());
         btnElipse.addActionListener(new DesenhoDeElipse());
         btnCores.addActionListener(new EscolhaCorContorno());
+        btnPreen.addActionListener(new EscolhaCorPreenchimento());
+        //btnSair.addActionListener(new FechamentoDeJanela());
 
         JPanel     pnlBotoes = new JPanel();
         FlowLayout flwBotoes = new FlowLayout(); 
@@ -185,7 +188,7 @@ public class Janela extends JFrame { // implements Cloneable
         
         this.addWindowListener (new FechamentoDeJanela());
 
-        this.setSize (700,500);
+        this.setSize (1024,768);
         this.setVisible (true);
     }
 
@@ -246,7 +249,7 @@ public class Janela extends JFrame { // implements Cloneable
                                 esperaFimCirculo = false;
                                 
                                 raio = Math.sqrt( Math.pow(p1.getX() - e.getX(),2) + Math.pow(p1.getY() - e.getY(),2) );
-                                figuras.add(new Circulo(p1.getX(), p1.getY(), (int)raio, corAtual ));
+                                figuras.add(new Circulo(p1.getX(), p1.getY(), (int)raio, corAtual, corAtualPreen ));
                                 figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
                                 
                                 statusBar1.setText("Mensagem:");
@@ -274,7 +277,7 @@ public class Janela extends JFrame { // implements Cloneable
                                             esperaFim2Elipse = false;
                                             
                                             raio2 = Math.sqrt( Math.pow(p1.getX() - e.getX(),2) + Math.pow(p1.getY() - e.getY(),2) );
-                                            figuras.add(new Elipse(p1.getX(), p1.getY(), (int)raio, (int)raio2, corAtual));
+                                            figuras.add(new Elipse(p1.getX(), p1.getY(), (int)raio, (int)raio2, corAtual, corAtualPreen));
                                             figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
                                             
                                             statusBar1.setText("Mensagem:");
@@ -363,9 +366,17 @@ public class Janela extends JFrame { // implements Cloneable
     
     private class EscolhaCorContorno implements ActionListener {
         public void actionPerformed (ActionEvent e) {
-            JColorChooser jc = new JColorChooser();
-            Color corContorno = jc.showDialog(btnCores, "Selecione a cor", Color.yellow);
+            JColorChooser javacor = new JColorChooser();
+            Color corContorno = javacor.showDialog(btnCores, "Selecione a cor", Color.yellow);
             corAtual = corContorno;
+        }
+    }
+    
+    private class EscolhaCorPreenchimento implements ActionListener {
+        public void actionPerformed (ActionEvent e) {
+            JColorChooser javacor = new JColorChooser();
+            Color corPreen = javacor.showDialog(btnCores, "Selecione a cor", Color.yellow);
+            corAtualPreen = corPreen;
         }
     }
 
