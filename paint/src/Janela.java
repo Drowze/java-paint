@@ -14,7 +14,8 @@ public class Janela extends JFrame { // implements Cloneable
                     btnLinha   = new JButton ("Linha"),
                     btnCirculo = new JButton ("Circulo"),
                     btnElipse  = new JButton ("Elipse"),
-                    btnCores   = new JButton ("Cores"),
+                    btnCores   = new JButton ("Contorno"),
+                    btnPreen   = new JButton ("Preenchimento"),
                     btnAbrir   = new JButton ("Abrir"),
                     btnSalvar  = new JButton ("Salvar"),
                     btnApagar  = new JButton ("Apagar"),
@@ -93,6 +94,16 @@ public class Janela extends JFrame { // implements Cloneable
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
+        try {
+            Image btnPreenImg = ImageIO.read(getClass().getResource("resources/preenchimento.png"));
+            btnPreen.setIcon(new ImageIcon(btnPreenImg));
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog (null,
+                                           "Arquivo preenchimento.jpg não foi encontrado",
+                                           "Arquivo de imagem ausente",
+                                           JOptionPane.WARNING_MESSAGE);
+        }
 
         try {
             Image btnAbrirImg = ImageIO.read(getClass().getResource("resources/abrir.jpg"));
@@ -155,6 +166,7 @@ public class Janela extends JFrame { // implements Cloneable
         pnlBotoes.add (btnCirculo);
         pnlBotoes.add (btnElipse);
         pnlBotoes.add (btnCores);
+        pnlBotoes.add (btnPreen);
         pnlBotoes.add (btnApagar);
         pnlBotoes.add (btnSair);
 
