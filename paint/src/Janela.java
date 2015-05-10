@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.*;
-import javax.swing.JOptionPane;
+import java.lang.*;
 
 public class Janela extends JFrame { // implements Cloneable
 
@@ -40,12 +40,11 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioPoligono, esperaFimPoligono;
 
     private Color corAtual = Color.black;
-    private Color corAtualPreen = Color.lightGray;
+    private Color corAtualPreen = Color.white;
     private Ponto p0, p1, p2;
     double raio, raio2;
     int x[] = new int[90];
     int y[] = new int[90];
-    int i = 0;
     
     private Vector<Figura> figuras = new Vector<Figura>();
 
@@ -208,7 +207,7 @@ public class Janela extends JFrame { // implements Cloneable
         btnQuadrado.addActionListener(new DesenhoDeQuadrado());//-------------------------------
         btnRetangulo.addActionListener(new DesenhoDeRetangulo());//-------------------------------
         btnPoligono.addActionListener(new DesenhoDePoligono());
-        btnEscrita.addActionListener(new CaixaDeEscrita());
+        //btnEscrita.addActionListener(new CaixaDeEscrita());
         btnCores.addActionListener(new EscolhaCorContorno());
         btnPreen.addActionListener(new EscolhaCorPreenchimento());
         //btnSair.addActionListener(new FechamentoDeJanela());
@@ -387,18 +386,8 @@ public class Janela extends JFrame { // implements Cloneable
                                                             if (esperaInicioPoligono) {
                                                                 esperaInicioPoligono = false;
                                                                 esperaFimPoligono = true;
-                                                                p0 = new Ponto (e.getX(), e.getY(), corAtual);
-                                                                x[0] = p0.getX();
-                                                                y[0] = p0.getY();
-                                                                i = 1;
-                                                                do{
-                                                                  p1 = new Ponto (e.getX(), e.getY(), corAtual);
-                                                                  if( Math.abs(x[0] - p1.getX()) > 50 || Math.abs(y[0] - p1.getY()) > 50){
-                                                                      x[i] = p1.getX();
-                                                                      y[i] = p1.getY();
-                                                                      i++;
-                                                                  } 
-                                                                }while(Math.abs(x[0] - p1.getX()) > 50 || Math.abs(y[0] - p1.getY()) > 0);
+
+                                                                p1 = new Ponto (e.getX(), e.getY(), corAtual);
 
                                                                 statusBar1.setText("Mensagem: clique o ponto final do poligono");    
                                                             }
@@ -406,7 +395,7 @@ public class Janela extends JFrame { // implements Cloneable
                                                                 if (esperaFimPoligono) {
                                                                     esperaFimPoligono = false;
 
-                                                                    figuras.add (new Poligono(x, y, i, corAtual, corAtualPreen));
+                                                                    figuras.add (new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual));
                                                                     figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
 
                                                                     statusBar1.setText("Mensagem:");    
@@ -597,16 +586,6 @@ public class Janela extends JFrame { // implements Cloneable
     private class FechamentoDeJanela extends WindowAdapter {
         public void windowClosing (WindowEvent e) {
             System.exit(0);
-        }
-    }
-    
-    private class CaixaDeEscrita implements ActionListener {
-        public void actionPerformed (ActionEvent e){
-            String texto=null; 
-            texto = JOptionPane.showInputDialog("texto");
-            JOptionPane.showMessageDialog(null, texto);
-            String string1 = new String(texto);
-            System.out.println(string1);
         }
     }
 
