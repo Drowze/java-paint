@@ -2,91 +2,132 @@ import java.awt.*;
 import java.util.*;
 
 public class Retangulo extends Figura {
-    protected Ponto p1, p2;
+    protected int xis[] = new int[99];
+    protected int yis[] = new int[99];
+    
+    protected int ladox, ladoy;
 	
-    public Retangulo (int x1, int y1, int x2, int y2)
-    {
-        this (x1, y1, x2, y2, Color.BLACK);
+    public Retangulo (int x[], int y[]) {
+        this (x, y, Color.BLACK, Color.WHITE);
     }
 	
-    public Retangulo (int x1, int y1, int x2, int y2, Color cor)
-    {
-        super(cor);
+    public Retangulo (int x[], int y[], Color cor) {
+        this (x, y, cor, Color.WHITE);
+    }
+    
+    public Retangulo (int x[], int y[], Color cor, Color preen) {
+        super(cor,preen);
 
-        this.p1 = new Ponto (x1,y1,cor);
-        this.p2 = new Ponto (x2,y2,cor);
+        this.ladox = Math.abs(x[0] - x[1]);
+        this.ladoy = Math.abs(y[0] - y[1]);
+        
+        
+        
+        this.xis[0] = x[0]; this.yis[0] = y[0]; //p0 do retangulo
+        if(y[1] > y[0]){
+            if(x[1] > x[0]){
+                //1º quadrante
+                this.xis[1] = x[0] + this.ladox; this.yis[1] = y[0]; //p1
+                this.xis[2] = x[0] + this.ladox; this.yis[2] = y[0] + this.ladoy; //p2
+                this.xis[3] = x[0];             this.yis[3] = y[0] + this.ladoy; //p3
+            }
+            else{
+                //2º quadrante
+                this.xis[1] = x[0];             this.yis[1] = y[0] + this.ladoy; //p1
+                this.xis[2] = x[0] - this.ladox; this.yis[2] = y[0] + this.ladoy; //p2
+                this.xis[3] = x[0] - this.ladox; this.yis[3] = y[0]; //p3
+            }
+        }
+        else{
+            if(x[1] < x[0]){
+                //3º quadrante
+                this.xis[1] = x[0] - this.ladox; this.yis[1] = y[0]; //p1
+                this.xis[2] = x[0] - this.ladox; this.yis[2] = y[0] - this.ladoy; //p2
+                this.xis[3] = x[0];             this.yis[3] = y[0] - this.ladoy; //p3
+            }
+            else{
+                //4º quadrante
+                this.xis[1] = x[0];             this.yis[1] = y[0] - this.ladoy; //p1
+                this.xis[2] = x[0] + this.ladox; this.yis[2] = y[0] - this.ladoy; //p2
+                this.xis[3] = x[0] + this.ladox; this.yis[3] = y[0]; //p3
+            }
+        }
     }
 
-    public Retangulo (String s)
-    {
-        StringTokenizer quebrador = new StringTokenizer(s,":");
+    public Retangulo (String q) {
+        StringTokenizer quebrador = new StringTokenizer(q,":");
 
         quebrador.nextToken();
 
-        int   x1  = Integer.parseInt(quebrador.nextToken());
-        int   y1  = Integer.parseInt(quebrador.nextToken());
+        int   x   = Integer.parseInt(quebrador.nextToken());
+        int   y   = Integer.parseInt(quebrador.nextToken());
 
-        int   x2  = Integer.parseInt(quebrador.nextToken());
-        int   y2  = Integer.parseInt(quebrador.nextToken());
+        int   lado   = Integer.parseInt(quebrador.nextToken());
 
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
                                Integer.parseInt(quebrador.nextToken())); // B
 
-        this.p1  = new Ponto (x1,y1,cor);
-        this.p2  = new Ponto (x2,y2,cor);
-        this.cor = cor;
+//        this.centro = new Ponto (x,y,cor);
+//        this.raio   = r;
+//        this.cor    = cor;
+        //aqui vamos ter que pegar também a cor do preenchimento
     }
 
-    public void setP1 (int x, int y)
-    {
-        this.p1 = new Ponto (x,y,this.getCor());
+    public void setP0 (int x, int y) {
+        this.xis[0] = x;
+        this.yis[0] = y;
     }
 
-    public void setP2 (int x, int y)
-    {
-        this.p2 = new Ponto (x,y,this.getCor());
+    public void setLadox (int ladox) {
+        this.ladox = ladox;
+    }
+    
+    public void setLadoy (int ladoy) {
+        this.ladoy = ladoy;
+    }
+    
+    public int getLadox () {
+        return this.ladox;
+    }
+    
+    public int getLadoy () {
+        return this.ladoy;
     }
 
-    public Ponto getP1 ()
-    {
-        return this.p1;
+    public Ponto getP0 () {
+        Ponto P0 = new Ponto(this.xis[0], this.yis[0]);
+        return P0;
     }
 
-    public Ponto getP2 ()
-    {
-        return this.p2;
+    public void torneSeVisivel (Graphics g) {
+        g.setColor (this.preen);
+        g.fillPolygon (xis, yis, 4);
+        g.setColor (this.cor);
+        g.drawPolygon (xis, yis, 4);
     }
 
-    public void torneSeVisivel (Graphics g)
-    {
-        g.setColor(this.cor);
-        g.drawLine(this.p1.getX(), this.p1.getY(),   // ponto inicial
-                   this.p1.getX(), this.p2.getY());
-        g.drawLine(this.p1.getX(), this.p1.getY(),   // ponto inicial
-                   this.p2.getX(), this.p1.getY());
-        g.drawLine(this.p1.getX(), this.p2.getY(),   // ponto inicial
-                   this.p2.getX(), this.p2.getY());
-        g.drawLine(this.p2.getX(), this.p1.getY(),   // ponto inicial
-                   this.p2.getX(), this.p2.getY());// ponto final
-    }
-
-    public String toString()
-    {
-        return "r:" +
-               this.p1.getX() +
+    public String toString() {
+        return "q:" +
+               this.xis[0] +
                ":" +
-               this.p1.getY() +
+               this.xis[2] +
                ":" +
-               this.p2.getX() +
+               this.ladox +
                ":" +
-               this.p2.getY() +
+               this.ladoy +
                ":" +
                this.getCor().getRed() +
                ":" +
                this.getCor().getGreen() +
                ":" +
-               this.getCor().getBlue();
+               this.getCor().getBlue() + 
+                ":" +
+               this.getPreen().getRed() + //daqui pra baixo pra salvar a cor do preenchimento
+                ":" +
+               this.getPreen().getGreen() + //sujeito a erros lol
+                ":" +
+               this.getPreen().getBlue();
     }
     
 }

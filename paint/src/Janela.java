@@ -40,7 +40,7 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioPoligono, esperaFimPoligono;
 
     private Color corAtual = Color.black;
-    private Color corAtualPreen = Color.white;
+    private Color corAtualPreen = new Color(0,0,0,0);
     private Ponto p0, p1, p2;
     double raio, raio2;
     int x[] = new int[90];
@@ -370,14 +370,20 @@ public class Janela extends JFrame { // implements Cloneable
                                                         esperaFimRetangulo = true;
 
                                                         p1 = new Ponto (e.getX(), e.getY(), corAtual);
+                                                        x[0] = p1.getX();
+                                                        y[0] = p1.getY();
 
                                                         statusBar1.setText("Mensagem: clique o ponto final do retangulo");    
                                                     }
                                                     else
                                                         if (esperaFimRetangulo) {
                                                             esperaFimRetangulo = false;
+                                                    
+                                                            p1 = new Ponto(e.getX(), e.getY(), corAtual);
+                                                            x[1] = p1.getX();
+                                                            y[1] = p1.getY();
 
-                                                            figuras.add (new Retangulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual));
+                                                            figuras.add (new Retangulo(x, y, corAtual, corAtualPreen));
                                                             figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
 
                                                             statusBar1.setText("Mensagem:");    
