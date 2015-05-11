@@ -350,8 +350,7 @@ public class Janela extends JFrame { // implements Cloneable
                 esperaInicioReta = true;
                 esperaFimReta = false;
                 desenhandoReta = false;
-                pnlDesenho.repaint();
-                statusBar1.repaint();
+                RepintaTela();
 
                 figuras.add (new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual));
                 figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
@@ -363,7 +362,7 @@ public class Janela extends JFrame { // implements Cloneable
                     esperaInicioCirculo = true;
                     esperaFimCirculo = false;
                     desenhandoCirculo = false;
-                    pnlDesenho.repaint();
+                    RepintaTela();
                     
                     figuras.add(new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen ));
                     figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
@@ -373,6 +372,7 @@ public class Janela extends JFrame { // implements Cloneable
                         esperaFimElipse = false;
                         desenhandoElipse = false;
                         esperaInicioElipse = true;
+                        RepintaTela();
 
                         figuras.add(new Elipse(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen));
                         figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
@@ -384,6 +384,7 @@ public class Janela extends JFrame { // implements Cloneable
                             esperaFimQuadrado = false;
                             desenhandoQuadrado = false;
                             esperaInicioQuadrado = true;
+                            RepintaTela();
 
                             figuras.add (new Quadrado(x, y, corAtual, corAtualPreen));
                             figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
@@ -395,6 +396,7 @@ public class Janela extends JFrame { // implements Cloneable
                                 esperaFimRetangulo = false;
                                 desenhandoRetangulo = false;
                                 esperaInicioRetangulo = true;
+                                RepintaTela();
 
                                 figuras.add (new Retangulo(x, y, corAtual, corAtualPreen));
                                 figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
@@ -414,7 +416,7 @@ public class Janela extends JFrame { // implements Cloneable
         
         public void mouseDragged(MouseEvent e) {
             if (desenhandoReta) {
-                pnlDesenho.repaint();
+                RepintaTela();
                 esperaFimReta = true;
                 Graphics g = pnlDesenho.getGraphics();
                 
@@ -427,24 +429,24 @@ public class Janela extends JFrame { // implements Cloneable
             else
                 if(desenhandoCirculo){
                     esperaFimCirculo = true;
+                    RepintaTela();
 
                     Circulo bola = new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
                 
                     xDragged = e.getX();
                     yDragged = e.getY();
                     bola.torneSeVisivel(pnlDesenho.getGraphics());
-                    repaint();
                 }
                 else
                     if (desenhandoElipse){
                         esperaFimElipse = true;
+                        RepintaTela();
 
                         Elipse ovo = new Elipse(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
 
                         xDragged = e.getX();
                         yDragged = e.getY();
                         ovo.torneSeVisivel(pnlDesenho.getGraphics());
-                        repaint();
                     }
                     else
                         if (desenhandoQuadrado){
@@ -456,7 +458,7 @@ public class Janela extends JFrame { // implements Cloneable
                             Quadrado quadradoDeDois = new Quadrado(x, y, corAtual, corAtualPreen);
                             
                             quadradoDeDois.torneSeVisivel(pnlDesenho.getGraphics());
-                            repaint();
+                            RepintaTela();
                         }
                         else
                             if (desenhandoRetangulo) {
@@ -468,7 +470,7 @@ public class Janela extends JFrame { // implements Cloneable
                                 Retangulo quadradoDiferente = new Retangulo (x, y, corAtual, corAtualPreen);
 
                                 quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
-                                repaint();
+                                RepintaTela();
                             }
         }
 
@@ -637,9 +639,15 @@ public class Janela extends JFrame { // implements Cloneable
         }
     }
     
-    private void ResetaPorra(){
-        this.setVisible (false);
-        this.setVisible (true);
+    private void RepintaTela(){
+        
+        try {
+            Thread.sleep(10);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        pnlDesenho.resize(pnlDesenho.getHeight()+1, pnlDesenho.getWidth()+1);
+        pnlDesenho.resize(pnlDesenho.getHeight()-1, pnlDesenho.getWidth()-1);
     }
 
   //public Object  clone    ();
