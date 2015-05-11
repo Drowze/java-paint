@@ -2,22 +2,51 @@ import java.awt.*;
 import java.util.*;
 
 public class Circulo extends Figura {
-    protected Ponto centro;
-    protected int   raio;
+    protected int centrox, centroy;
+    protected int   diametro;
 	
-    public Circulo (int x, int y, int r) {
-        this (x, y, r, Color.BLACK, Color.WHITE);
+    public Circulo (int x, int y, int x1, int y1, int r) {
+        this (x, y, x1, y1, Color.BLACK, Color.WHITE);
     }
 	
-    public Circulo (int x, int y, int r, Color cor) {
-        this (x, y, r, cor, Color.WHITE);
+    public Circulo (int x, int y, int x1, int y1, Color cor) {
+        this (x, y, x1, y1, cor, Color.WHITE);
     }
     
-    public Circulo (int x, int y, int r, Color cor, Color preen) {
+    public Circulo (int x, int y, int x1, int y1, Color cor, Color preen) {
         super(cor,preen);
-
-        this.centro = new Ponto (x,y);
-        this.raio   = r;
+        
+        if(Math.abs(x - x1) > Math.abs(y - y1))
+            this.diametro = (int)(Math.abs(x - x1));
+        else 
+            this.diametro = (int)(Math.abs(y - y1));
+        
+        
+        if(y1 > y){
+            if(x1 > x){
+                //1º quadrante
+                this.centrox = (x+diametro/2);
+                this.centroy = (y+diametro/2);
+            }
+            else{
+                //2º quadrante
+                this.centrox = (x-diametro/2);
+                this.centroy = (y+diametro/2);
+            }
+        }
+        else{
+            if(x1 < x){
+                //3º quadrante
+                this.centrox = (x-diametro/2);
+                this.centroy = (y-diametro/2);
+            }
+            else{
+                //4º quadrante
+                this.centrox = (x+diametro/2);
+                this.centroy = (y-diametro/2);
+            }
+        }
+        
     }
 
     public Circulo (String s) {
@@ -28,48 +57,78 @@ public class Circulo extends Figura {
         int   x   = Integer.parseInt(quebrador.nextToken());
         int   y   = Integer.parseInt(quebrador.nextToken());
 
-        int   r   = Integer.parseInt(quebrador.nextToken());
+        int   d   = Integer.parseInt(quebrador.nextToken());
 
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
                                Integer.parseInt(quebrador.nextToken())); // B
+        
+        Color preen = new Color (Integer.parseInt(quebrador.nextToken()),  // R
+                               Integer.parseInt(quebrador.nextToken()),  // G
+                               Integer.parseInt(quebrador.nextToken()),  // B
+                               Integer.parseInt(quebrador.nextToken())); // Alpha
 
-        this.centro = new Ponto (x,y,cor);
-        this.raio   = r;
+        this.centrox = x;
+        this.centroy = y;
+        this.diametro  = d;
         this.cor    = cor;
         //aqui vamos ter que pegar também a cor do preenchimento
     }
 
-    public void setCentro (int x, int y) {
-        this.centro = new Ponto (x,y,this.getCor());
+    //setters
+    public void setCentro (Ponto centro) {
+        this.centrox = centro.getX();
+        this.centroy = centro.getY();
+    }
+    
+    public void setCentroX (int x) {
+        this.centrox = x;
+    }
+    
+    public void setCentroY (int y) {
+        this.centroy = y;
     }
 
     public void setRaio (int r) {
-        this.raio = r;
+        this.diametro = r*2;
+    }
+    
+    public void setDiametro (int d) {
+        this.diametro = d;
     }
 
-    public Ponto getCentro () {
-        return this.centro;
+    //getters
+    public Ponto getCentro(){
+        Ponto centro = new Ponto(this.centrox, this.centroy);
+        return centro;
     }
-
-    public int setRaio () {
-        return this.raio;
+    
+    public int getCentroX () {
+        return this.centrox;
+    }
+    
+    public int getCentroY () {
+        return this.centroy;
     }
 
     public void torneSeVisivel (Graphics g) {
+        int upperLeftX = centrox-diametro/2;
+        int upperLeftY = centroy-diametro/2;
+        
         g.setColor (this.preen);
-        g.fillOval (this.centro.getX()-raio, this.centro.getY()-raio, 2*raio, 2*raio);
+        g.fillOval (upperLeftX, upperLeftY, diametro, diametro);
         g.setColor (this.cor);
-        g.drawOval (this.centro.getX()-raio, this.centro.getY()-raio, 2*raio, 2*raio);
+        g.drawOval (upperLeftX, upperLeftY, diametro, diametro);
+        //g.drawLine (this.centrox, this.centroy, upperLeftX, upperLeftY);
     }
 
     public String toString() {
         return "c:" +
-               this.centro.getX() +
+               this.centrox +
                ":" +
-               this.centro.getY() +
+               this.centroy +
                ":" +
-               this.raio +
+               this.diametro +
                ":" +
                this.getCor().getRed() +
                ":" +
@@ -81,6 +140,8 @@ public class Circulo extends Figura {
                 ":" +
                this.getPreen().getGreen() + //sujeito a erros lol
                 ":" +
-               this.getPreen().getBlue();
+               this.getPreen().getBlue() +
+                ":" +
+               this.getPreen().getAlpha();
     }
 }
