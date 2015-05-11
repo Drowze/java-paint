@@ -52,42 +52,64 @@ public class Elipse extends Figura {
         int   x   = Integer.parseInt(quebrador.nextToken());
         int   y   = Integer.parseInt(quebrador.nextToken());
 
-        int   r1  = Integer.parseInt(quebrador.nextToken());
-        int   r2  = Integer.parseInt(quebrador.nextToken());
+        int   raiox  = Integer.parseInt(quebrador.nextToken());
+        int   raioy  = Integer.parseInt(quebrador.nextToken());
 
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
                                Integer.parseInt(quebrador.nextToken())); // B
+        
+        Color preen = new Color (Integer.parseInt(quebrador.nextToken()),  // R
+                               Integer.parseInt(quebrador.nextToken()),  // G
+                               Integer.parseInt(quebrador.nextToken()),  // B
+                               Integer.parseInt(quebrador.nextToken())); // Alpha
 
         this.centrox = x;
         this.centroy = y;
-        this.raiox  = r1;
-        this.raioy  = r2;
+        this.raiox  = raiox;
+        this.raioy  = raioy;
         this.cor    = cor;
-        //aqui vamos ter que pegar também a cor do preenchimento
+        this.preen = preen;
     }
 
-//    public void setCentro (int x, int y) {
-//        this.centro = new Ponto (x,y,this.getCor());
-//    }
-
-    public void setRaioX (int r1) {
-        this.raiox = r1;
+    //setters
+    public void setCentro (Ponto centro) {
+        this.centrox = centro.getX();
+        this.centroy = centro.getY();
+    }
+    
+    public void setCentro (int x, int y) {
+        this.centrox = x;
+        this.centroy = y;
+    }
+    
+    public void setCentroX (int x) {
+        this.centrox = x;
+    }
+    
+    public void setCentroY (int y) {
+        this.centrox = y;
     }
 
-    public void setRaioY (int r2) {
-        this.raioy = r2;
+    public void setRaioX (int raiox) {
+        this.raiox = raiox;
     }
 
-//    public Ponto getCentro () {
-//        return this.centro;
-//    }
+    public void setRaioY (int raioy) {
+        this.raioy = raioy;
+    }
+    
+    //getters
+    public Ponto getCentro () {
+        Ponto ponto = new Ponto(this.centrox, this.centroy, this.cor);
+        return ponto;
+    }
 
-    public int setRaioX () {
+    public int getRaioX () {
         return this.raiox;
     }
 
-    public int setRaioY () {
+    public int getRaioY () {
         return this.raioy;
     }
     
@@ -118,6 +140,8 @@ public class Elipse extends Figura {
                 ":" +
                this.getPreen().getGreen() + //sujeito a erros lol
                 ":" +
-               this.getPreen().getBlue();
+               this.getPreen().getBlue() +
+                ":" +
+               this.getPreen().getAlpha();
     }
 }

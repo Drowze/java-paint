@@ -72,7 +72,7 @@ public class Circulo extends Figura {
         this.centroy = y;
         this.diametro  = d;
         this.cor    = cor;
-        //aqui vamos ter que pegar também a cor do preenchimento
+        this.preen = preen;
     }
 
     //setters
@@ -109,6 +109,14 @@ public class Circulo extends Figura {
     
     public int getCentroY () {
         return this.centroy;
+    }
+    
+    public int getRaio () {
+        return this.diametro/2;
+    }
+    
+    public int getDiametro () {
+        return this.diametro;
     }
 
     public void torneSeVisivel (Graphics g) {

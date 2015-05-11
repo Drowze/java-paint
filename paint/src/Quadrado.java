@@ -58,20 +58,33 @@ public class Quadrado extends Figura {
         StringTokenizer quebrador = new StringTokenizer(q,":");
 
         quebrador.nextToken();
+        int x[] = new int[3];
+        int y[] = new int[3];
 
-        int   x   = Integer.parseInt(quebrador.nextToken());
-        int   y   = Integer.parseInt(quebrador.nextToken());
+        x[0]   = Integer.parseInt(quebrador.nextToken());
+        y[0]   = Integer.parseInt(quebrador.nextToken());
+        x[1]   = Integer.parseInt(quebrador.nextToken());
+        y[1]   = Integer.parseInt(quebrador.nextToken());
+        x[2]   = Integer.parseInt(quebrador.nextToken());
+        y[2]   = Integer.parseInt(quebrador.nextToken());
+        x[3]   = Integer.parseInt(quebrador.nextToken());
+        y[3]   = Integer.parseInt(quebrador.nextToken());
 
         int   lado   = Integer.parseInt(quebrador.nextToken());
 
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
                                Integer.parseInt(quebrador.nextToken())); // B
-
-//        this.centro = new Ponto (x,y,cor);
-//        this.raio   = r;
-//        this.cor    = cor;
-        //aqui vamos ter que pegar também a cor do preenchimento
+        
+        Color preen = new Color (Integer.parseInt(quebrador.nextToken()),  // R
+                               Integer.parseInt(quebrador.nextToken()),  // G
+                               Integer.parseInt(quebrador.nextToken()),  // B
+                               Integer.parseInt(quebrador.nextToken())); // Alpha
+        
+        this.xis[0] = x[0]; this.xis[1] = x[1]; this.xis[2] = x[2]; this.xis[3] = x[3];
+        this.yis[0] = y[0]; this.yis[1] = y[1]; this.yis[2] = y[2]; this.yis[3] = y[3];
+        this.cor    = cor;
+        this.preen  = preen;
     }
 
     public void setP0 (int x, int y) {
@@ -103,7 +116,19 @@ public class Quadrado extends Figura {
         return "q:" +
                this.xis[0] +
                ":" +
+               this.yis[0] +
+               ":" +
+               this.xis[1] +
+               ":" +
+               this.yis[1] +
+               ":" +
                this.xis[2] +
+               ":" +
+               this.yis[2] +
+               ":" +
+               this.xis[3] +
+               ":" +
+               this.yis[3] +
                ":" +
                this.lado +
                ":" +
@@ -117,6 +142,8 @@ public class Quadrado extends Figura {
                 ":" +
                this.getPreen().getGreen() + //sujeito a erros lol
                 ":" +
-               this.getPreen().getBlue();
+               this.getPreen().getBlue() +
+                ":" +
+               this.getPreen().getAlpha();
     }
 }

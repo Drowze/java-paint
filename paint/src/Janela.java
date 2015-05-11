@@ -200,7 +200,8 @@ public class Janela extends JFrame { // implements Cloneable
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
-
+        
+        btnSalvar.addActionListener(new Salvar());
         btnPonto.addActionListener (new DesenhoDePonto());
         btnLinha.addActionListener (new DesenhoDeReta ());
         btnCirculo.addActionListener(new DesenhoDeCirculo());
@@ -433,8 +434,6 @@ public class Janela extends JFrame { // implements Cloneable
 
                     Circulo bola = new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
                 
-                    xDragged = e.getX();
-                    yDragged = e.getY();
                     bola.torneSeVisivel(pnlDesenho.getGraphics());
                 }
                 else
@@ -444,8 +443,6 @@ public class Janela extends JFrame { // implements Cloneable
 
                         Elipse ovo = new Elipse(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
 
-                        xDragged = e.getX();
-                        yDragged = e.getY();
                         ovo.torneSeVisivel(pnlDesenho.getGraphics());
                     }
                     else
@@ -648,6 +645,26 @@ public class Janela extends JFrame { // implements Cloneable
         }
         pnlDesenho.resize(pnlDesenho.getHeight()+1, pnlDesenho.getWidth()+1);
         pnlDesenho.resize(pnlDesenho.getHeight()-1, pnlDesenho.getWidth()-1);
+    }
+    
+    private class Salvar implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+                JFileChooser j= new JFileChooser();
+               
+                int returnVal = j.showSaveDialog(Janela.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                    fw.write(figuras.toString());
+                    fw.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+               
+        }
     }
 
   //public Object  clone    ();
