@@ -595,3 +595,4 @@ public class Janela extends JFrame { // implements Cloneable
   //public int     hashCode ();
   //public String  toString ();
 }
+//teste
