@@ -722,6 +722,8 @@ public class Janela extends JFrame { // implements Cloneable
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                try {
                    Scanner scanner = new Scanner(new FileReader(j.getSelectedFile())).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
+                   figuras.clear();
+                   RepintaTela();
                    while (scanner.hasNext()) {
                        String tipo = scanner.next();
                        System.out.println("inicio");
