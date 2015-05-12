@@ -634,10 +634,20 @@ public class Janela extends JFrame { // implements Cloneable
 
     private class FechamentoDeJanela extends WindowAdapter {
         public void windowClosing (WindowEvent e) {
+            
+            	String Texto=null; 
+	String SaidaSalva=("Salvando"); 
+	String SaidaSemSalvar=("Saindo sem salvar"); 
+	Texto = JOptionPane.showInputDialog("Deseja salvar? (sim/nao)");
+	if(Texto.equals("Sim")==true || Texto.equals("sim")==true){
+            JOptionPane.showMessageDialog(null, SaidaSalva);
+            String string1 = new String(SaidaSalva);
+            System.out.println(string1);
+
             JFileChooser j= new JFileChooser();
-               
-                int returnVal = j.showSaveDialog(Janela.this);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            int returnVal = j.showSaveDialog(Janela.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
                     for(int k = 0; k<figuras.size(); k++){
@@ -646,10 +656,19 @@ public class Janela extends JFrame { // implements Cloneable
                     }
                     fw.close();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                     ex.printStackTrace();
                 }
-                }
-                System.exit(0);
+            }
+            System.exit(0);
+		
+	}
+	else{
+		JOptionPane.showMessageDialog(null, SaidaSemSalvar);
+		String string1 = new String(SaidaSemSalvar);
+		System.out.println(string1);
+                System.exit(0);		
+	}
+            
         }
     }
     
