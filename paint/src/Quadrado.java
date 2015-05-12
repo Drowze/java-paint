@@ -2,8 +2,8 @@ import java.awt.*;
 import java.util.*;
 
 public class Quadrado extends Figura {
-    protected int xis[] = new int[99];
-    protected int yis[] = new int[99];
+    protected int xis[] = new int[4];
+    protected int yis[] = new int[4];
     
     protected int lado;
 	

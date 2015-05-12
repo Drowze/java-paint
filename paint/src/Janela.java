@@ -31,7 +31,8 @@ public class Janela extends JFrame { // implements Cloneable
     private JLabel statusBar1 = new JLabel ("Mensagem:"),
                    statusBar2 = new JLabel ("Coordenada:");
 
-    boolean esperaPonto, 
+    boolean aberto,
+            esperaPonto, 
             esperaInicioReta, esperaFimReta, desenhandoReta,
             esperaInicioCirculo, esperaFimCirculo, desenhandoCirculo,
             esperaInicioElipse, esperaFimElipse, desenhandoElipse,
@@ -201,6 +202,7 @@ public class Janela extends JFrame { // implements Cloneable
                                            JOptionPane.WARNING_MESSAGE);
         }
         
+        btnAbrir.addActionListener(new Abrir());
         btnSalvar.addActionListener(new Salvar());
         btnPonto.addActionListener (new DesenhoDePonto());
         btnLinha.addActionListener (new DesenhoDeReta ());
@@ -632,7 +634,22 @@ public class Janela extends JFrame { // implements Cloneable
 
     private class FechamentoDeJanela extends WindowAdapter {
         public void windowClosing (WindowEvent e) {
-            System.exit(0);
+            JFileChooser j= new JFileChooser();
+               
+                int returnVal = j.showSaveDialog(Janela.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                    for(int k = 0; k<figuras.size(); k++){
+                        fw.write(figuras.elementAt(k).toString());
+                        fw.write("\n");
+                    }
+                    fw.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                }
+                System.exit(0);
         }
     }
     
@@ -652,18 +669,163 @@ public class Janela extends JFrame { // implements Cloneable
         public void actionPerformed(ActionEvent e)
         {
                 JFileChooser j= new JFileChooser();
+                
                
                 int returnVal = j.showSaveDialog(Janela.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
-                    fw.write(figuras.toString());
+                    for(int k = 0; k<figuras.size(); k++){
+                        fw.write(figuras.elementAt(k).toString());
+                        fw.write("\n");
+                    }
                     fw.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
                
+        }
+    }
+    
+    private class Abrir implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            String p = "p";
+            String l = "l";
+            String c = "c";
+            String el = "e";
+            String r = "r";
+            String q = "q";
+            //String t = "t";
+            aberto = false;
+            JFileChooser j= new JFileChooser();
+            int returnVal = j.showOpenDialog(Janela.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+               try {
+                   Scanner scanner = new Scanner(new FileReader(j.getSelectedFile())).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
+                   while (scanner.hasNext()) {
+                       String tipo = scanner.next();
+                       System.out.println("inicio");
+                       System.out.println(tipo);
+                       if(p.equals(tipo)){
+                           System.out.println("entrou ponto");
+                           figuras.add (new Ponto (Integer.parseInt(scanner.next()), 
+                                                   Integer.parseInt(scanner.next()), 
+                                                   new Color(Integer.parseInt(scanner.next()), 
+                                                        Integer.parseInt(scanner.next()), 
+                                                        Integer.parseInt(scanner.next())))
+                                        );
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                           scanner.next();
+                       }
+                       if(l.equals(tipo)){
+                           System.out.println("entrou linha");
+                           figuras.add (new Linha(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            new Color(Integer.parseInt(scanner.next()), 
+                                                    Integer.parseInt(scanner.next()), 
+                                                    Integer.parseInt(scanner.next())))
+                                        );
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                           scanner.next();
+                       }
+                       if(c.equals(tipo)){
+                           System.out.println("entrou circ");
+                           figuras.add(new Circulo(Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next())), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()),
+                                           Integer.parseInt(scanner.next())))
+                                       );
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                       }
+                       if(el.equals(tipo)){
+                           System.out.println("entrou elipse");
+                           figuras.add (new Elipse(Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   Integer.parseInt(scanner.next()), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next())), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()),
+                                           Integer.parseInt(scanner.next())))
+                                        );
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                       }
+                       if(q.equals(tipo)){
+                           System.out.println("entrou quadrado");
+                           int x[] = new int[99], y[] = new int[99];
+                           x[0] = Integer.parseInt(scanner.next());
+                           y[0] = Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           x[1] = Integer.parseInt(scanner.next());
+                           y[1] = Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           figuras.add (new Quadrado(x, y, 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next())), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()),
+                                           Integer.parseInt(scanner.next()))));
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                       }
+                       if(r.equals(tipo)){
+                           System.out.println("entrou retangulo");
+                           int x[] = new int[99], y[] = new int[99];
+                           x[0] = Integer.parseInt(scanner.next());
+                           x[1] = Integer.parseInt(scanner.next());
+                           y[0] = Integer.parseInt(scanner.next());
+                           y[1] = Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           Integer.parseInt(scanner.next());
+                           figuras.add (new Retangulo(x, y, 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next())), 
+                                   new Color(Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()), 
+                                           Integer.parseInt(scanner.next()),
+                                           Integer.parseInt(scanner.next())))
+                                        );
+                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                       }
+//                       if(t.equals(tipo)){
+//                           System.out.println("entrou texto");
+//                           int x = Integer.parseInt(scanner.next());
+//                           int y = Integer.parseInt(scanner.next());
+//                           String txt =  scanner.next();
+//                           Color cor1 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+//                           Color cor2 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+//                           int size = Integer.parseInt(scanner.next());
+//                           String family = scanner.next();
+//                           int style = Integer.parseInt(scanner.next());
+//                           Font fonte =  new Font (family, style, size);
+//
+//                           //figuras.add (new Texto(x, y, txt, cor1, cor2, fonte));
+//                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+//                       }
+                       System.out.println("fim");
+                   }
+               }catch (Exception ex) {
+                   ex.printStackTrace();
+               }
+            }
         }
     }
 

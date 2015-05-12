@@ -108,10 +108,14 @@ public class Retangulo extends Figura {
     }
 
     public String toString() {
-        return "q:" +
+        return "r:" +
                this.xis[0] +
                ":" +
                this.xis[2] +
+               ":" +
+               this.yis[0] +
+               ":" +
+               this.yis[2] +
                ":" +
                this.ladox +
                ":" +
@@ -127,7 +131,9 @@ public class Retangulo extends Figura {
                 ":" +
                this.getPreen().getGreen() + //sujeito a erros lol
                 ":" +
-               this.getPreen().getBlue();
+               this.getPreen().getBlue() +
+                ":" +
+               this.getPreen().getAlpha();
     }
     
 }

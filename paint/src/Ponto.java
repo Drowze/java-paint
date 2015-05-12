@@ -17,6 +17,14 @@ public class Ponto extends Figura
   	this.x = x;
         this.y = y;
     }
+    
+    public Ponto (int x, int y, Color cor, Color preen)
+    {
+        super (cor);
+
+  	this.x = x;
+        this.y = y;
+    }
 
     public Ponto (String s)
     {

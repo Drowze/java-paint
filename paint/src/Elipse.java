@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.*;
 
 public class Elipse extends Figura {
-    protected int centrox, centroy;
+    protected int centrox, centroy, xis0, yis0, xis1, yis1;
     protected int raiox, raioy;
 	
     public Elipse (int x, int y, int x1, int y1) {
@@ -15,6 +15,10 @@ public class Elipse extends Figura {
     
     public Elipse (int x, int y, int x1, int y1, Color cor, Color preen) {
         super (cor,preen);
+        xis0 = x;
+        yis0 = y;
+        xis1 = x1;
+        yis1 = y1;
         this.raiox = (int)Math.abs(x-x1)/2;
         this.raioy = (int)Math.abs(y-y1)/2;
         
@@ -122,13 +126,13 @@ public class Elipse extends Figura {
 
     public String toString() {
         return "e:" +
-               this.centrox +
+               this.xis0 +
                ":" +
-               this.centroy +
+               this.yis0 +
                ":" +
-               this.raiox +
+               this.xis1 +
                ":" +
-               this.raioy +
+               this.yis1 +
                ":" +
                this.getCor().getRed() +
                ":" +
