@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.*;
 
 public class Circulo extends Figura {
-    protected int centrox, centroy;
+    protected int centrox, centroy, xis1, yis1, xis0, yis0;
     protected int   diametro;
 	
     public Circulo (int x, int y, int x1, int y1, int r) {
@@ -11,10 +11,17 @@ public class Circulo extends Figura {
 	
     public Circulo (int x, int y, int x1, int y1, Color cor) {
         this (x, y, x1, y1, cor, Color.WHITE);
+        this.xis1 = x1;
+        this.yis1 = y1;
     }
     
     public Circulo (int x, int y, int x1, int y1, Color cor, Color preen) {
         super(cor,preen);
+        this.xis0 = x;
+        this.yis0 = y;
+        this.xis1 = x1;
+        this.yis1 = y1;
+        
         
         if(Math.abs(x - x1) > Math.abs(y - y1))
             this.diametro = (int)(Math.abs(x - x1));
@@ -72,7 +79,7 @@ public class Circulo extends Figura {
         this.centroy = y;
         this.diametro  = d;
         this.cor    = cor;
-        //aqui vamos ter que pegar também a cor do preenchimento
+        this.preen = preen;
     }
 
     //setters
@@ -110,6 +117,14 @@ public class Circulo extends Figura {
     public int getCentroY () {
         return this.centroy;
     }
+    
+    public int getRaio () {
+        return this.diametro/2;
+    }
+    
+    public int getDiametro () {
+        return this.diametro;
+    }
 
     public void torneSeVisivel (Graphics g) {
         int upperLeftX = centrox-diametro/2;
@@ -124,11 +139,13 @@ public class Circulo extends Figura {
 
     public String toString() {
         return "c:" +
-               this.centrox +
+               this.xis0 +
                ":" +
-               this.centroy +
+               this.yis0 +
                ":" +
-               this.diametro +
+               this.xis1 +
+               ":" +
+               this.yis1 +
                ":" +
                this.getCor().getRed() +
                ":" +

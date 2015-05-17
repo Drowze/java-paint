@@ -7,6 +7,13 @@ public class Linha extends Figura {
     public Linha (int x1, int y1, int x2, int y2) {
         this (x1, y1, x2, y2, Color.BLACK);
     }
+    
+    public Linha (int x1, int y1, int x2, int y2, Color cor, Color preen) {
+        super(cor);
+
+        this.p1 = new Ponto (x1,y1,cor);
+        this.p2 = new Ponto (x2,y2,cor);
+    }
 	
     public Linha (int x1, int y1, int x2, int y2, Color cor) {
         super(cor);
@@ -58,7 +65,7 @@ public class Linha extends Figura {
     }
 
     public String toString() {
-        return "r:" +
+        return "l:" +
                this.p1.getX() +
                ":" +
                this.p1.getY() +
