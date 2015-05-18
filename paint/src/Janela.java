@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import static java.awt.event.KeyEvent.VK_DELETE;
 import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
@@ -330,9 +331,10 @@ public class Janela extends JFrame { // implements Cloneable
 
     private class MeuJPanel extends    JPanel 
                             implements MouseListener,
+                                       KeyListener,
                                        MouseMotionListener 
     {
-	
+        
         private static final long serialVersionUID = 1L;
 
 	public MeuJPanel() {
@@ -340,6 +342,7 @@ public class Janela extends JFrame { // implements Cloneable
 
             this.addMouseListener       (this);
             this.addMouseMotionListener (this);
+            this.addKeyListener         (this);
         }
 
         public void paint (Graphics g) {
@@ -485,6 +488,8 @@ public class Janela extends JFrame { // implements Cloneable
         }
 
         public void mouseClicked (MouseEvent e) {
+            pnlDesenho.setFocusable(true);
+            pnlDesenho.requestFocusInWindow();
             if(esperaSelect){
                 for(int i = figuras.size()-1; i >= 0; i--){
                     p1 = new Ponto(e.getX(), e.getY());
@@ -554,22 +559,26 @@ public class Janela extends JFrame { // implements Cloneable
                                 quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
                                 RepintaTela();
                             }
-                            else
-                                if (esperaMover == true && esperaSelect == true) {
-                                    
-                                }
-                                else
-                                    if (esperaUp == true && esperaSelect == true) {
-                                        
-                                    }
-                                    else
-                                        if (esperaDown == true && esperaSelect == true ){
-                                            
-                                        }
         }
 
         public void mouseMoved(MouseEvent e) {
             statusBar2.setText("Coordenada: "+e.getX()+","+e.getY());
+        }
+
+        public void keyTyped(KeyEvent ke) {
+           //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public void keyPressed(KeyEvent ke) {
+            if(esperaSelect == true && ke.getKeyCode() == VK_DELETE){
+              figuras.remove(selecionado);
+              esperaSelect = false;
+              RepintaTela();
+           }
+        }
+
+        public void keyReleased(KeyEvent ke) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 
