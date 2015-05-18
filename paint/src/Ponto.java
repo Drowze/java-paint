@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.*;
 
 public class Ponto extends Figura
@@ -78,5 +79,19 @@ public class Ponto extends Figura
                this.getCor().getGreen() +
                ":" +
                this.getCor().getBlue();
+    }
+    
+    public boolean cliquePertence (int x, int y){
+        int HIT_BOX_SIZE = 4;
+        
+        Point2D ponto_aux;
+        ponto_aux = new Point2D.Double();
+        ponto_aux.setLocation((int)this.x, (int)this.y);
+        
+        if(Math.abs(x-this.x) <= HIT_BOX_SIZE && Math.abs(y-this.y) <= HIT_BOX_SIZE) {
+            return true;
+        }
+        
+        return false;
     }
 }

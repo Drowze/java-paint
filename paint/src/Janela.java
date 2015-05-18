@@ -24,14 +24,20 @@ public class Janela extends JFrame { // implements Cloneable
                     btnSalvar    = new JButton ("Salvar"),
 
                     btnApagar    = new JButton ("Apagar"),
-                    btnSair      = new JButton ("Sair");
+                    btnSair      = new JButton ("Sair"),
+    
+                    btnSelect    = new JButton ("Selecionar"),
+                    btnMover     = new JButton ("Mover"),
+                    btnUp        = new JButton ("Pra Cima"),
+                    btnDown      = new JButton ("Pra Baixo");
 
     private MeuJPanel pnlDesenho = new MeuJPanel ();
     
     private JLabel statusBar1 = new JLabel ("Mensagem:"),
                    statusBar2 = new JLabel ("Coordenada:");
 
-    boolean aberto,
+    boolean esperaSelect, esperaMover, esperaUp, esperaDown,
+            aberto,
             esperaPonto, 
             esperaInicioReta, esperaFimReta, desenhandoReta,
             esperaInicioCirculo, esperaFimCirculo, desenhandoCirculo,
@@ -47,12 +53,58 @@ public class Janela extends JFrame { // implements Cloneable
     int x[] = new int[90];
     int y[] = new int[90];
     int xDragged, yDragged;
+    int selecionado;
     
     private Vector<Figura> figuras = new Vector<Figura>();
+    private Vector<Figura> aux = new Vector<Figura>();
 
     public Janela () {
         super("Editor Gráfico");
+        
+        try {
+            Image btnDownImg = ImageIO.read(getClass().getResource("resources/down.png"));
+            btnDown.setIcon(new ImageIcon(btnDownImg));
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog (null,
+                                           "Arquivo down.png não foi encontrado",
+                                           "Arquivo de imagem ausente",
+                                           JOptionPane.WARNING_MESSAGE);
+        }
+        
+        try {
+            Image btnUpImg = ImageIO.read(getClass().getResource("resources/up.png"));
+            btnUp.setIcon(new ImageIcon(btnUpImg));
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog (null,
+                                           "Arquivo up.png não foi encontrado",
+                                           "Arquivo de imagem ausente",
+                                           JOptionPane.WARNING_MESSAGE);
+        }
 
+        try {
+            Image btnMoverImg = ImageIO.read(getClass().getResource("resources/mover.png"));
+            btnMover.setIcon(new ImageIcon(btnMoverImg));
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog (null,
+                                           "Arquivo mover.png não foi encontrado",
+                                           "Arquivo de imagem ausente",
+                                           JOptionPane.WARNING_MESSAGE);
+        }
+        
+        try {
+            Image btnSelectImg = ImageIO.read(getClass().getResource("resources/selecionar.png"));
+            btnSelect.setIcon(new ImageIcon(btnSelectImg));
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog (null,
+                                           "Arquivo selecionar.png não foi encontrado",
+                                           "Arquivo de imagem ausente",
+                                           JOptionPane.WARNING_MESSAGE);
+        }
+        
         try {
             Image btnPontoImg = ImageIO.read(getClass().getResource("resources/ponto.jpg"));
             btnPonto.setIcon(new ImageIcon(btnPontoImg));
@@ -214,7 +266,12 @@ public class Janela extends JFrame { // implements Cloneable
         //btnEscrita.addActionListener(new CaixaDeEscrita());
         btnCores.addActionListener(new EscolhaCorContorno());
         btnPreen.addActionListener(new EscolhaCorPreenchimento());
-        //btnSair.addActionListener(new FechamentoDeJanela());
+        btnSair.addActionListener (new ParedeDeJanela());
+        
+        btnSelect.addActionListener(new SelecionarImagem());
+        btnMover.addActionListener(new SelecionarImagem());
+        btnUp.addActionListener(new Up ());
+        btnDown.addActionListener(new Down ());
 
         JPanel     pnlBotoes = new JPanel();
         GridBagConstraints flwBotoes = new GridBagConstraints(); 
@@ -237,6 +294,10 @@ public class Janela extends JFrame { // implements Cloneable
         pnlBotoes.add (btnPoligono, flwBotoes);
         
         flwBotoes.gridy = 2;
+        pnlBotoes.add (btnSelect, flwBotoes);
+        pnlBotoes.add (btnMover, flwBotoes);
+        pnlBotoes.add (btnUp, flwBotoes);
+        pnlBotoes.add (btnDown, flwBotoes);
         pnlBotoes.add (btnEscrita, flwBotoes);
         pnlBotoes.add (btnCores, flwBotoes);
         pnlBotoes.add (btnPreen, flwBotoes);
@@ -424,6 +485,18 @@ public class Janela extends JFrame { // implements Cloneable
         }
 
         public void mouseClicked (MouseEvent e) {
+            if(esperaSelect){
+                for(int i = figuras.size()-1; i >= 0; i--){
+                    p1 = new Ponto(e.getX(), e.getY());
+                    if(figuras.elementAt(i).cliquePertence(p1.getX(), p1.getY()) == true){
+                        selecionado = i;
+                        System.out.println("Selecionada");   
+                        i = -1;
+                    }
+                }
+                //esperaSelect = false;
+            }
+            
         }
         
         public void mouseEntered (MouseEvent e) {
@@ -481,6 +554,18 @@ public class Janela extends JFrame { // implements Cloneable
                                 quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
                                 RepintaTela();
                             }
+                            else
+                                if (esperaMover == true && esperaSelect == true) {
+                                    
+                                }
+                                else
+                                    if (esperaUp == true && esperaSelect == true) {
+                                        
+                                    }
+                                    else
+                                        if (esperaDown == true && esperaSelect == true ){
+                                            
+                                        }
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -490,6 +575,11 @@ public class Janela extends JFrame { // implements Cloneable
 
     private class DesenhoDePonto implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = true;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -510,6 +600,11 @@ public class Janela extends JFrame { // implements Cloneable
 
     private class DesenhoDeReta implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = true;
             esperaFimReta    = false;
@@ -530,6 +625,11 @@ public class Janela extends JFrame { // implements Cloneable
     
     private class DesenhoDeCirculo implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -550,6 +650,11 @@ public class Janela extends JFrame { // implements Cloneable
     
     private class DesenhoDeElipse implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -569,6 +674,11 @@ public class Janela extends JFrame { // implements Cloneable
     }
     private class DesenhoDeQuadrado implements ActionListener {//----------------------------------------------------------------------------
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -589,6 +699,11 @@ public class Janela extends JFrame { // implements Cloneable
     }
     private class DesenhoDeRetangulo implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -608,6 +723,11 @@ public class Janela extends JFrame { // implements Cloneable
     }//----------------------------------------------------------------------------
      private class DesenhoDePoligono implements ActionListener {
         public void actionPerformed (ActionEvent e) {
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = false;
+            
             esperaPonto      = false;
             esperaInicioReta = false;
             esperaFimReta    = false;
@@ -625,6 +745,88 @@ public class Janela extends JFrame { // implements Cloneable
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
     }//----------------------------------------------------------------------------
+     
+     private class SelecionarImagem implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = false;
+            esperaSelect = true;
+            
+            esperaPonto      = false;
+            esperaInicioReta = false;
+            esperaFimReta    = false;
+            esperaInicioCirculo = false;
+            esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
+            esperaInicioQuadrado = false;
+            esperaFimQuadrado = false;
+            esperaInicioRetangulo = false;
+            esperaFimRetangulo = false; 
+            esperaInicioPoligono = false;
+            esperaFimPoligono = false;
+
+            statusBar1.setText("Mensagem: clique para selecionar");
+        }
+    }
+     
+     private class MoverImagem implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            esperaDown = false;
+            esperaUp = false;
+            esperaMover = true;
+            esperaSelect = esperaSelect; // no mods
+            
+            esperaPonto      = false;
+            esperaInicioReta = false;
+            esperaFimReta    = false;
+            esperaInicioCirculo = false;
+            esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
+            esperaInicioQuadrado = false;
+            esperaFimQuadrado = false;
+            esperaInicioRetangulo = false;
+            esperaFimRetangulo = false; 
+            esperaInicioPoligono = false;
+            esperaFimPoligono = false;
+
+            statusBar1.setText("Mensagem: clique para selecionar");
+        }
+    }
+     
+     private class Up implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+             if (esperaSelect){
+                try{
+                   aux.removeAllElements();
+                   aux.addAll(figuras);
+                   figuras.set(selecionado, aux.elementAt(selecionado+1));
+                   figuras.set(selecionado+1, aux.elementAt(selecionado));
+                   selecionado++;
+                   RepintaTela();
+                } catch(Exception er){ }
+             } else 
+                 statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
+         }
+     }
+     
+     private class Down implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+             if (esperaSelect){
+                try{
+                   aux.removeAllElements();
+                   aux.addAll(figuras);
+                   figuras.set(selecionado, aux.elementAt(selecionado-1));
+                   figuras.set(selecionado-1, aux.elementAt(selecionado));
+                   selecionado--;
+                   RepintaTela();
+                }catch(Exception er){  }
+             } else 
+                 statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
+         }
+     }
     
     private class EscolhaCorContorno implements ActionListener {
         public void actionPerformed (ActionEvent e) {
@@ -714,6 +916,47 @@ public class Janela extends JFrame { // implements Cloneable
                 }
             }
                
+        }
+    }
+    
+    private class ParedeDeJanela implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            
+            String Texto=null; 
+            String SaidaSalva=("Salvando"); 
+            String SaidaSemSalvar=("Saindo sem salvar"); 
+            Texto = JOptionPane.showInputDialog("Deseja salvar? (sim/nao)");
+            if(Texto.equals("Sim")==true || Texto.equals("sim")==true){
+                JOptionPane.showMessageDialog(null, SaidaSalva);
+                String string1 = new String(SaidaSalva);
+                System.out.println(string1);
+
+                JFileChooser j= new JFileChooser();
+
+                int returnVal = j.showSaveDialog(Janela.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                        for(int k = 0; k<figuras.size(); k++){
+                            fw.write(figuras.elementAt(k).toString());
+                            fw.write("\n");
+                        }
+                        fw.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            System.exit(0);
+		
+	}
+	else{
+		JOptionPane.showMessageDialog(null, SaidaSemSalvar);
+		String string1 = new String(SaidaSemSalvar);
+		System.out.println(string1);
+                System.exit(0);		
+	}
         }
     }
     

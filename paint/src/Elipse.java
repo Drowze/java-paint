@@ -148,4 +148,16 @@ public class Elipse extends Figura {
                 ":" +
                this.getPreen().getAlpha();
     }
+    
+    public boolean cliquePertence (int x, int y){
+        int raioAuxX, raioAuxY;
+        
+        raioAuxX = (int)Math.abs(x - centrox);
+        raioAuxY = (int)Math.abs(y - centroy);
+        
+        if(raioAuxX <= this.raiox && raioAuxY <= this.raioy)
+            return true;
+        else
+            return false;
+    }
 }

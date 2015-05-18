@@ -136,4 +136,11 @@ public class Retangulo extends Figura {
                this.getPreen().getAlpha();
     }
     
+    public boolean cliquePertence (int x, int y){
+        Polygon poligono_aux = new Polygon(xis, yis, 4);
+        if(poligono_aux.contains((double)x, (double)y))
+            return true;
+        else
+            return false;
+    }
 }

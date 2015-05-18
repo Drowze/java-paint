@@ -161,4 +161,19 @@ public class Circulo extends Figura {
                 ":" +
                this.getPreen().getAlpha();
     }
+    
+    public boolean cliquePertence (int x, int y){
+        int raioAux;
+        if(Math.abs(x - centrox) > Math.abs(y - centroy))
+            raioAux = (int)Math.abs(x - centrox);
+        else
+            raioAux = (int)Math.abs(y - centroy);
+        
+        if(raioAux < (this.diametro / 2))
+            return true;
+        else
+            return false;
+            
+    }
+            
 }

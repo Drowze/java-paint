@@ -89,4 +89,8 @@ public class Poligono extends Figura {
                 ":" +
                this.getPreen().getBlue();
     }
+    
+    public boolean cliquePertence (int x, int y){
+        return false;
+    }
 }

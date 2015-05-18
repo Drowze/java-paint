@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.*;
 
 public class Linha extends Figura {
@@ -79,5 +80,23 @@ public class Linha extends Figura {
                this.getCor().getGreen() +
                ":" +
                this.getCor().getBlue();
+    }
+    
+    public boolean cliquePertence (int x, int y){
+        int HIT_BOX_SIZE = 4;
+        int boxX = x - HIT_BOX_SIZE / 2;
+        int boxY = y - HIT_BOX_SIZE / 2;
+        int width = HIT_BOX_SIZE;
+        int height = HIT_BOX_SIZE;
+        
+        Line2D linha_aux;
+        linha_aux = new Line2D.Double();
+        linha_aux.setLine((int)this.p1.getX(), (int)this.p1.getY(), (int)this.p2.getX(), (int)this.p2.getY());
+        
+        if(linha_aux.intersects(boxX, boxY, width, height)) {
+            return true;
+        }
+        
+        return false;
     }
 }
