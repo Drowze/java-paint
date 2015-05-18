@@ -43,7 +43,7 @@ public class Janela extends JFrame { // implements Cloneable
     private Color corAtual = Color.black;
     private Color corAtualPreen = new Color(0,0,0,0);
     private Ponto p0, p1, p2;
-    double raio, raio2;
+    //double raio, raio2;
     int x[] = new int[90];
     int y[] = new int[90];
     int xDragged, yDragged;
@@ -217,30 +217,43 @@ public class Janela extends JFrame { // implements Cloneable
         //btnSair.addActionListener(new FechamentoDeJanela());
 
         JPanel     pnlBotoes = new JPanel();
-        FlowLayout flwBotoes = new FlowLayout(); 
-        pnlBotoes.setLayout (flwBotoes);
-
-        pnlBotoes.add (btnAbrir);
-        pnlBotoes.add (btnSalvar);
-        pnlBotoes.add (btnPonto);
-        pnlBotoes.add (btnLinha);
-        pnlBotoes.add (btnCirculo);
-        pnlBotoes.add (btnElipse);
-        pnlBotoes.add (btnQuadrado);
-        pnlBotoes.add (btnRetangulo);
-        pnlBotoes.add (btnPoligono);
-        pnlBotoes.add (btnEscrita);
-        pnlBotoes.add (btnCores);
-        pnlBotoes.add (btnPreen);
-        pnlBotoes.add (btnApagar);
-        pnlBotoes.add (btnSair);
+        GridBagConstraints flwBotoes = new GridBagConstraints(); 
+        
+        pnlBotoes.setLayout (new GridBagLayout());
+        
+        flwBotoes.fill = GridBagConstraints.HORIZONTAL;
+        flwBotoes.gridy = 0;
+        pnlBotoes.add (btnAbrir, flwBotoes);
+        pnlBotoes.add (btnSalvar, flwBotoes);
+        pnlBotoes.add (btnSair, flwBotoes);
+        
+        flwBotoes.gridy = 1;
+        pnlBotoes.add (btnPonto, flwBotoes);
+        pnlBotoes.add (btnLinha, flwBotoes);
+        pnlBotoes.add (btnCirculo, flwBotoes);
+        pnlBotoes.add (btnElipse, flwBotoes);
+        pnlBotoes.add (btnQuadrado, flwBotoes);
+        pnlBotoes.add (btnRetangulo, flwBotoes);
+        pnlBotoes.add (btnPoligono, flwBotoes);
+        
+        flwBotoes.gridy = 2;
+        pnlBotoes.add (btnEscrita, flwBotoes);
+        pnlBotoes.add (btnCores, flwBotoes);
+        pnlBotoes.add (btnPreen, flwBotoes);
+        //pnlBotoes.add (btnApagar, flwBotoes2);
+        
 
         JPanel     pnlStatus = new JPanel();
-        GridLayout grdStatus = new GridLayout(1,2);
-        pnlStatus.setLayout(grdStatus);
+        GridBagConstraints grdStatus = new GridBagConstraints();
+        pnlStatus.setLayout(new GridBagLayout());
 
-        pnlStatus.add(statusBar1);
-        pnlStatus.add(statusBar2);
+        grdStatus.gridy = 0;
+        //grdStatus.weightx = 1.0;
+        pnlStatus.add(statusBar1, grdStatus);
+        
+        //grdStatus.weightx = 0;
+        grdStatus.gridy = 1;
+        pnlStatus.add(statusBar2, grdStatus);
 
         Container cntForm = this.getContentPane();
         cntForm.setLayout (new BorderLayout());
@@ -295,7 +308,7 @@ public class Janela extends JFrame { // implements Cloneable
 
                         p1 = new Ponto (e.getX(), e.getY(), corAtual);
 
-                        statusBar1.setText("Mensagem: clique o ponto final do raio do circulo");
+                        statusBar1.setText("Mensagem: solte o mouse o ponto final do circulo");
                     }
                     else
                         if(esperaInicioElipse){
@@ -304,7 +317,7 @@ public class Janela extends JFrame { // implements Cloneable
 
                             p1 = new Ponto (e.getX(), e.getY(), corAtual);
 
-                            statusBar1.setText("Mensagem: clique o ponto final da elipse");
+                            statusBar1.setText("Mensagem: solte o mouse no ponto final da elipse");
                         }
                         else
                             if (esperaInicioQuadrado) {
@@ -315,7 +328,7 @@ public class Janela extends JFrame { // implements Cloneable
                                 x[0] = p1.getX();
                                 y[0] = p1.getY();
 
-                                statusBar1.setText("Mensagem: clique o ponto final da diagonal do quadrado");    
+                                statusBar1.setText("Mensagem: solte o mouse no ponto final do quadrado");    
                             }
                             else//---------------------------------------------------
                                 if (esperaInicioRetangulo) {
@@ -326,7 +339,7 @@ public class Janela extends JFrame { // implements Cloneable
                                     x[0] = p1.getX();
                                     y[0] = p1.getY();
 
-                                    statusBar1.setText("Mensagem: clique o ponto final do retangulo");    
+                                    statusBar1.setText("Mensagem: solte o mouse no ponto final do retangulo");    
                                 }
                                 else//---------------------------------------------------
                                     if (esperaInicioPoligono) {
@@ -369,6 +382,8 @@ public class Janela extends JFrame { // implements Cloneable
                     
                     figuras.add(new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen ));
                     figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                    
+                    statusBar1.setText("Mensagem:");   
                 }
                 else
                     if(esperaFimElipse){
@@ -423,10 +438,7 @@ public class Janela extends JFrame { // implements Cloneable
                 esperaFimReta = true;
                 Graphics g = pnlDesenho.getGraphics();
                 
-                xDragged = e.getX();
-                yDragged = e.getY();
-                
-                g.drawLine(xDragged, yDragged, p1.getX(), p1.getY());
+                g.drawLine(e.getX(), e.getY(), p1.getX(), p1.getY());
                 
             }
             else
@@ -451,9 +463,8 @@ public class Janela extends JFrame { // implements Cloneable
                         if (desenhandoQuadrado){
                             esperaFimQuadrado = true;
                                     
-                            p1 = new Ponto(e.getX(), e.getY(), corAtual);
-                            x[1] = p1.getX();
-                            y[1] = p1.getY();
+                            x[1] = e.getX();
+                            y[1] = e.getY();
                             Quadrado quadradoDeDois = new Quadrado(x, y, corAtual, corAtualPreen);
                             
                             quadradoDeDois.torneSeVisivel(pnlDesenho.getGraphics());
@@ -463,9 +474,8 @@ public class Janela extends JFrame { // implements Cloneable
                             if (desenhandoRetangulo) {
                                 esperaFimRetangulo = true;
 
-                                p1 = new Ponto(e.getX(), e.getY(), corAtual);
-                                x[1] = p1.getX();
-                                y[1] = p1.getY();
+                                x[1] = e.getX();
+                                y[1] = e.getY();
                                 Retangulo quadradoDiferente = new Retangulo (x, y, corAtual, corAtualPreen);
 
                                 quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
