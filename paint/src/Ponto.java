@@ -82,7 +82,7 @@ public class Ponto extends Figura
     }
     
     public boolean cliquePertence (int x, int y){
-        int HIT_BOX_SIZE = 4;
+        int HIT_BOX_SIZE = 10;
         
         Point2D ponto_aux;
         ponto_aux = new Point2D.Double();
@@ -96,6 +96,7 @@ public class Ponto extends Figura
     }
     
     public void move (int x, int y){
-    
+        this.setX(x);
+        this.setY(y);
     }
 }
