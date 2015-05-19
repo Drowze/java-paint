@@ -15,8 +15,8 @@ Segue a especificação de cada fase, bem como do prazo de entrega.
 **Fase I (entregar 28/abr):**  
 ~~a) Implementar coloração de contorno.~~  
 ~~b) Implementar coloração de interior, quando cabível.~~  
-~~c) Implementar o desenho de círculo;~~
-~~d) Implementar o desenho de elipse.~~
+~~c) Implementar o desenho de círculo;~~  
+~~d) Implementar o desenho de elipse.~~  
 Para escolher cor, usar JColorChooser.  
 
 
