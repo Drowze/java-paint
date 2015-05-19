@@ -1,6 +1,6 @@
 # java-paint
 
-**Compilando em terminal:  **
+**Compilando em terminal:**  
 ```
 javac *.java  
 java -classpath . Editor  
