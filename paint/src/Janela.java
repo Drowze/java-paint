@@ -509,6 +509,8 @@ public class Janela extends JFrame { // implements Cloneable
         }
         
         public void mouseDragged(MouseEvent e) {
+            pnlDesenho.setFocusable(true);
+            pnlDesenho.requestFocusInWindow();
             if (esperaMover && esperaSelect) {
                 if(figuras.get(selecionado).cliquePertence(e.getX(), e.getY())){
                     figuras.get(selecionado).move(e.getX(), e.getY());
