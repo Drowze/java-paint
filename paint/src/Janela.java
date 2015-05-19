@@ -15,10 +15,10 @@ public class Janela extends JFrame { // implements Cloneable
                     btnLinha     = new JButton ("Linha"),
                     btnCirculo   = new JButton ("Circulo"),
                     btnElipse    = new JButton ("Elipse"),                
-                    btnQuadrado  = new JButton ("Quadrado"),//--------------------------------------------
-                    btnRetangulo = new JButton ("Retangulo"),//--------------------------------------------
-                    btnPoligono  = new JButton ("Poligono"),//-----------------------------------
-                    btnEscrita   = new JButton ("Escrita"),//----------------------------------
+                    btnQuadrado  = new JButton ("Quadrado"),
+                    btnRetangulo = new JButton ("Retangulo"),
+                    btnPoligono  = new JButton ("Poligono"),
+                    btnEscrita   = new JButton ("Escrita"),
                     btnCores     = new JButton ("Contorno"),
                     btnPreen     = new JButton ("Preenchimento"),
                     btnAbrir     = new JButton ("Abrir"),
@@ -49,8 +49,7 @@ public class Janela extends JFrame { // implements Cloneable
 
     private Color corAtual = Color.black;
     private Color corAtualPreen = new Color(0,0,0,0);
-    private Ponto p0, p1, p2;
-    //double raio, raio2;
+    private Ponto p1;
     int x[] = new int[90];
     int y[] = new int[90];
     int xDragged, yDragged;
@@ -149,7 +148,7 @@ public class Janela extends JFrame { // implements Cloneable
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
-        try {//----------------------------------------------------------------------------------------------------------
+        try {
             Image btnQuadradoImg = ImageIO.read(getClass().getResource("resources/quadrado.jpg"));
             btnQuadrado.setIcon(new ImageIcon(btnQuadradoImg));
         }
@@ -168,7 +167,7 @@ public class Janela extends JFrame { // implements Cloneable
                                            "Arquivo retangulo.jpg não foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
-        }//----------------------------------------------------------------------------------------------------------
+        }
 
         try {
             Image btnPoligonoImg = ImageIO.read(getClass().getResource("resources/poligono.jpg"));
@@ -189,7 +188,7 @@ public class Janela extends JFrame { // implements Cloneable
                                            "Arquivo escrita.jpg não foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
-        }//----------------------------------------------------------------------------------------------------
+        }
         try {
             Image btnCoresImg = ImageIO.read(getClass().getResource("resources/cores.jpg"));
             btnCores.setIcon(new ImageIcon(btnCoresImg));
@@ -261,8 +260,8 @@ public class Janela extends JFrame { // implements Cloneable
         btnLinha.addActionListener (new DesenhoDeReta ());
         btnCirculo.addActionListener(new DesenhoDeCirculo());
         btnElipse.addActionListener(new DesenhoDeElipse());
-        btnQuadrado.addActionListener(new DesenhoDeQuadrado());//-------------------------------
-        btnRetangulo.addActionListener(new DesenhoDeRetangulo());//-------------------------------
+        btnQuadrado.addActionListener(new DesenhoDeQuadrado());
+        btnRetangulo.addActionListener(new DesenhoDeRetangulo());
         btnPoligono.addActionListener(new DesenhoDePoligono());
         //btnEscrita.addActionListener(new CaixaDeEscrita());
         btnCores.addActionListener(new EscolhaCorContorno());
@@ -354,7 +353,6 @@ public class Janela extends JFrame { // implements Cloneable
             if (esperaPonto) {
                 figuras.add (new Ponto (e.getX(), e.getY(), corAtual));
                 figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                //esperaPonto = false;
             }
             else
                 if (esperaInicioReta) {
@@ -394,7 +392,7 @@ public class Janela extends JFrame { // implements Cloneable
 
                                 statusBar1.setText("Mensagem: solte o mouse no ponto final do quadrado");    
                             }
-                            else//---------------------------------------------------
+                            else
                                 if (esperaInicioRetangulo) {
                                     esperaInicioRetangulo = false;
                                     desenhandoRetangulo = true;
@@ -405,7 +403,7 @@ public class Janela extends JFrame { // implements Cloneable
 
                                     statusBar1.setText("Mensagem: solte o mouse no ponto final do retangulo");    
                                 }
-                                else//---------------------------------------------------
+                                else //Consertar Polígono
                                     if (esperaInicioPoligono) {
                                         esperaInicioPoligono = false;
                                         //desenhandoPoligono = true;
@@ -422,7 +420,7 @@ public class Janela extends JFrame { // implements Cloneable
                                             figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
 
                                             statusBar1.setText("Mensagem:");    
-                                        }//-------------------------------------------------------
+                                        }
         }
         
         public void mouseReleased (MouseEvent e) {
@@ -499,7 +497,6 @@ public class Janela extends JFrame { // implements Cloneable
                         i = -1;
                     }
                 }
-                //esperaSelect = false;
             }
             
         }
@@ -681,7 +678,8 @@ public class Janela extends JFrame { // implements Cloneable
             statusBar1.setText("Mensagem: clique o ponto central da Elipse");
         }
     }
-    private class DesenhoDeQuadrado implements ActionListener {//----------------------------------------------------------------------------
+    
+    private class DesenhoDeQuadrado implements ActionListener {
         public void actionPerformed (ActionEvent e) {
             esperaDown = false;
             esperaUp = false;
@@ -706,6 +704,7 @@ public class Janela extends JFrame { // implements Cloneable
             statusBar1.setText("Mensagem: clique o ponto central da quadrado");
         }
     }
+    
     private class DesenhoDeRetangulo implements ActionListener {
         public void actionPerformed (ActionEvent e) {
             esperaDown = false;
@@ -729,8 +728,9 @@ public class Janela extends JFrame { // implements Cloneable
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
-    }//----------------------------------------------------------------------------
-     private class DesenhoDePoligono implements ActionListener {
+    }
+    
+    private class DesenhoDePoligono implements ActionListener {
         public void actionPerformed (ActionEvent e) {
             esperaDown = false;
             esperaUp = false;
@@ -753,9 +753,9 @@ public class Janela extends JFrame { // implements Cloneable
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
-    }//----------------------------------------------------------------------------
+    }
      
-     private class SelecionarImagem implements ActionListener{
+    private class SelecionarImagem implements ActionListener{
         public void actionPerformed(ActionEvent e){
             esperaDown = false;
             esperaUp = false;
@@ -780,7 +780,7 @@ public class Janela extends JFrame { // implements Cloneable
         }
     }
      
-     private class MoverImagem implements ActionListener{
+    private class MoverImagem implements ActionListener{
         public void actionPerformed(ActionEvent e){
             esperaDown = false;
             esperaUp = false;
@@ -801,41 +801,41 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioPoligono = false;
             esperaFimPoligono = false;
 
-            statusBar1.setText("Mensagem: clique para selecionar");
+            statusBar1.setText("Mensagem:");
         }
     }
      
-     private class Up implements ActionListener{
-         public void actionPerformed(ActionEvent e){
-             if (esperaSelect){
-                try{
-                   aux.removeAllElements();
-                   aux.addAll(figuras);
-                   figuras.set(selecionado, aux.elementAt(selecionado+1));
-                   figuras.set(selecionado+1, aux.elementAt(selecionado));
-                   selecionado++;
-                   RepintaTela();
-                } catch(Exception er){ }
-             } else 
-                 statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
-         }
-     }
+    private class Up implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            if (esperaSelect){
+               try{
+                  aux.removeAllElements();
+                  aux.addAll(figuras);
+                  figuras.set(selecionado, aux.elementAt(selecionado+1));
+                  figuras.set(selecionado+1, aux.elementAt(selecionado));
+                  selecionado++;
+                  RepintaTela();
+               } catch(Exception er){ }
+            } else 
+                statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
+        }
+    }
      
-     private class Down implements ActionListener{
-         public void actionPerformed(ActionEvent e){
-             if (esperaSelect){
-                try{
-                   aux.removeAllElements();
-                   aux.addAll(figuras);
-                   figuras.set(selecionado, aux.elementAt(selecionado-1));
-                   figuras.set(selecionado-1, aux.elementAt(selecionado));
-                   selecionado--;
-                   RepintaTela();
-                }catch(Exception er){  }
-             } else 
-                 statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
-         }
-     }
+    private class Down implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            if (esperaSelect){
+               try{
+                  aux.removeAllElements();
+                  aux.addAll(figuras);
+                  figuras.set(selecionado, aux.elementAt(selecionado-1));
+                  figuras.set(selecionado-1, aux.elementAt(selecionado));
+                  selecionado--;
+                  RepintaTela();
+               }catch(Exception er){  }
+            } else 
+                statusBar1.setText("Mensagem: Nenhuma imagem selecionada");
+        }
+    }
     
     private class EscolhaCorContorno implements ActionListener {
         public void actionPerformed (ActionEvent e) {
@@ -856,40 +856,38 @@ public class Janela extends JFrame { // implements Cloneable
     private class FechamentoDeJanela extends WindowAdapter {
         public void windowClosing (WindowEvent e) {
             
-            	String Texto=null; 
-	String SaidaSalva=("Salvando"); 
-	String SaidaSemSalvar=("Saindo sem salvar"); 
-	Texto = JOptionPane.showInputDialog("Deseja salvar? (sim/nao)");
-	if(Texto.equals("Sim")==true || Texto.equals("sim")==true){
-            JOptionPane.showMessageDialog(null, SaidaSalva);
-            String string1 = new String(SaidaSalva);
-            System.out.println(string1);
+            String Texto=null; 
+            String SaidaSalva=("Salvando"); 
+            String SaidaSemSalvar=("Saindo sem salvar"); 
+            Texto = JOptionPane.showInputDialog("Deseja salvar? (sim/nao)");
+            if(Texto.equals("Sim")==true || Texto.equals("sim")==true){
+                JOptionPane.showMessageDialog(null, SaidaSalva);
+                String string1 = new String(SaidaSalva);
+                System.out.println(string1);
 
-            JFileChooser j= new JFileChooser();
+                JFileChooser j= new JFileChooser();
 
-            int returnVal = j.showSaveDialog(Janela.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                try {
-                    FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
-                    for(int k = 0; k<figuras.size(); k++){
-                        fw.write(figuras.elementAt(k).toString());
-                        fw.write("\n");
+                int returnVal = j.showSaveDialog(Janela.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                        for(int k = 0; k<figuras.size(); k++){
+                            fw.write(figuras.elementAt(k).toString());
+                            fw.write("\n");
+                        }
+                        fw.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                    fw.close();
-                } catch (Exception ex) {
-                     ex.printStackTrace();
                 }
+                System.exit(0);
             }
-            System.exit(0);
-		
-	}
-	else{
-		JOptionPane.showMessageDialog(null, SaidaSemSalvar);
-		String string1 = new String(SaidaSemSalvar);
-		System.out.println(string1);
-                System.exit(0);		
-	}
-            
+            else{
+                    JOptionPane.showMessageDialog(null, SaidaSemSalvar);
+                    String string1 = new String(SaidaSemSalvar);
+                    System.out.println(string1);
+                    System.exit(0);		
+            }
         }
     }
     
@@ -928,11 +926,9 @@ public class Janela extends JFrame { // implements Cloneable
         }
     }
     
-    private class ParedeDeJanela implements ActionListener
-    {
+    private class ParedeDeJanela implements ActionListener {
         public void actionPerformed(ActionEvent e)
         {
-            
             String Texto=null; 
             String SaidaSalva=("Salvando"); 
             String SaidaSemSalvar=("Saindo sem salvar"); 
@@ -959,13 +955,13 @@ public class Janela extends JFrame { // implements Cloneable
                 }
             System.exit(0);
 		
-	}
-	else{
-		JOptionPane.showMessageDialog(null, SaidaSemSalvar);
-		String string1 = new String(SaidaSemSalvar);
-		System.out.println(string1);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, SaidaSemSalvar);
+                String string1 = new String(SaidaSemSalvar);
+                System.out.println(string1);
                 System.exit(0);		
-	}
+            }
         }
     }
     
@@ -982,28 +978,28 @@ public class Janela extends JFrame { // implements Cloneable
             JFileChooser j= new JFileChooser();
             int returnVal = j.showOpenDialog(Janela.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-               try {
-                   Scanner scanner = new Scanner(new FileReader(j.getSelectedFile())).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
-                   figuras.clear();
-                   RepintaTela();
-                   while (scanner.hasNext()) {
-                       String tipo = scanner.next();
-                       System.out.println("inicio");
-                       System.out.println(tipo);
-                       if(p.equals(tipo)){
-                           System.out.println("entrou ponto");
-                           figuras.add (new Ponto (Integer.parseInt(scanner.next()), 
-                                                   Integer.parseInt(scanner.next()), 
-                                                   new Color(Integer.parseInt(scanner.next()), 
+                try {
+                    Scanner scanner = new Scanner(new FileReader(j.getSelectedFile())).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
+                    figuras.clear();
+                    RepintaTela();
+                    while (scanner.hasNext()) {
+                        String tipo = scanner.next();
+                        System.out.println("inicio");
+                        System.out.println(tipo);
+                        if(p.equals(tipo)){
+                            System.out.println("entrou ponto");
+                            figuras.add (new Ponto (Integer.parseInt(scanner.next()), 
+                                                    Integer.parseInt(scanner.next()), 
+                                                    new Color(Integer.parseInt(scanner.next()), 
                                                         Integer.parseInt(scanner.next()), 
                                                         Integer.parseInt(scanner.next())))
                                         );
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                           scanner.next();
-                       }
-                       if(l.equals(tipo)){
-                           System.out.println("entrou linha");
-                           figuras.add (new Linha(Integer.parseInt(scanner.next()), 
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                            scanner.next();
+                        }
+                        if(l.equals(tipo)){
+                            System.out.println("entrou linha");
+                            figuras.add (new Linha(Integer.parseInt(scanner.next()), 
                                             Integer.parseInt(scanner.next()), 
                                             Integer.parseInt(scanner.next()), 
                                             Integer.parseInt(scanner.next()), 
@@ -1011,102 +1007,102 @@ public class Janela extends JFrame { // implements Cloneable
                                                     Integer.parseInt(scanner.next()), 
                                                     Integer.parseInt(scanner.next())))
                                         );
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                           scanner.next();
-                       }
-                       if(c.equals(tipo)){
-                           System.out.println("entrou circ");
-                           figuras.add(new Circulo(Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next())), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()),
-                                           Integer.parseInt(scanner.next())))
-                                       );
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                       }
-                       if(el.equals(tipo)){
-                           System.out.println("entrou elipse");
-                           figuras.add (new Elipse(Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   Integer.parseInt(scanner.next()), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next())), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()),
-                                           Integer.parseInt(scanner.next())))
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                            scanner.next();
+                        }
+                        if(c.equals(tipo)){
+                            System.out.println("entrou circ");
+                            figuras.add(new Circulo(Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next())), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()),
+                                            Integer.parseInt(scanner.next())))
                                         );
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                       }
-                       if(q.equals(tipo)){
-                           System.out.println("entrou quadrado");
-                           int x[] = new int[99], y[] = new int[99];
-                           x[0] = Integer.parseInt(scanner.next());
-                           y[0] = Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           x[1] = Integer.parseInt(scanner.next());
-                           y[1] = Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           figuras.add (new Quadrado(x, y, 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next())), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()),
-                                           Integer.parseInt(scanner.next()))));
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                       }
-                       if(r.equals(tipo)){
-                           System.out.println("entrou retangulo");
-                           int x[] = new int[99], y[] = new int[99];
-                           x[0] = Integer.parseInt(scanner.next());
-                           x[1] = Integer.parseInt(scanner.next());
-                           y[0] = Integer.parseInt(scanner.next());
-                           y[1] = Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           Integer.parseInt(scanner.next());
-                           figuras.add (new Retangulo(x, y, 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next())), 
-                                   new Color(Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()), 
-                                           Integer.parseInt(scanner.next()),
-                                           Integer.parseInt(scanner.next())))
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
+                        if(el.equals(tipo)){
+                            System.out.println("entrou elipse");
+                            figuras.add (new Elipse(Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    Integer.parseInt(scanner.next()), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next())), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()),
+                                            Integer.parseInt(scanner.next())))
+                                         );
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
+                        if(q.equals(tipo)){
+                            System.out.println("entrou quadrado");
+                            int x[] = new int[99], y[] = new int[99];
+                            x[0] = Integer.parseInt(scanner.next());
+                            y[0] = Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            x[1] = Integer.parseInt(scanner.next());
+                            y[1] = Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            figuras.add (new Quadrado(x, y, 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next())), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()),
+                                            Integer.parseInt(scanner.next()))));
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
+                        if(r.equals(tipo)){
+                            System.out.println("entrou retangulo");
+                            int x[] = new int[99], y[] = new int[99];
+                            x[0] = Integer.parseInt(scanner.next());
+                            x[1] = Integer.parseInt(scanner.next());
+                            y[0] = Integer.parseInt(scanner.next());
+                            y[1] = Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            Integer.parseInt(scanner.next());
+                            figuras.add (new Retangulo(x, y, 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next())), 
+                                    new Color(Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()), 
+                                            Integer.parseInt(scanner.next()),
+                                            Integer.parseInt(scanner.next())))
                                         );
-                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-                       }
-//                       if(t.equals(tipo)){
-//                           System.out.println("entrou texto");
-//                           int x = Integer.parseInt(scanner.next());
-//                           int y = Integer.parseInt(scanner.next());
-//                           String txt =  scanner.next();
-//                           Color cor1 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
-//                           Color cor2 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
-//                           int size = Integer.parseInt(scanner.next());
-//                           String family = scanner.next();
-//                           int style = Integer.parseInt(scanner.next());
-//                           Font fonte =  new Font (family, style, size);
-//
-//                           //figuras.add (new Texto(x, y, txt, cor1, cor2, fonte));
-//                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-//                       }
-                       System.out.println("fim");
-                   }
-               }catch (Exception ex) {
-                   ex.printStackTrace();
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
+ //                       if(t.equals(tipo)){
+ //                           System.out.println("entrou texto");
+ //                           int x = Integer.parseInt(scanner.next());
+ //                           int y = Integer.parseInt(scanner.next());
+ //                           String txt =  scanner.next();
+ //                           Color cor1 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+ //                           Color cor2 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+ //                           int size = Integer.parseInt(scanner.next());
+ //                           String family = scanner.next();
+ //                           int style = Integer.parseInt(scanner.next());
+ //                           Font fonte =  new Font (family, style, size);
+ //
+ //                           //figuras.add (new Texto(x, y, txt, cor1, cor2, fonte));
+ //                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+ //                       }
+                        System.out.println("fim");
+                    }
+                }catch (Exception ex) {
+                    ex.printStackTrace();
                }
             }
         }
