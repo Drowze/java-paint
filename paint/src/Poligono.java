@@ -93,4 +93,8 @@ public class Poligono extends Figura {
     public boolean cliquePertence (int x, int y){
         return false;
     }
+    
+    public void move (int x, int y){
+    
+    }
 }

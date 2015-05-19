@@ -78,6 +78,11 @@ public class Retangulo extends Figura {
         this.xis[0] = x;
         this.yis[0] = y;
     }
+    
+    public void setPontos (int x[], int y[]) {
+        this.xis = x;
+        this.yis = y;
+    }
 
     public void setLadox (int ladox) {
         this.ladox = ladox;
@@ -142,5 +147,18 @@ public class Retangulo extends Figura {
             return true;
         else
             return false;
+    }
+    
+    public void move (int x, int y){
+        int x1[] = new int [4];
+        int y1[] = new int [4];
+        
+        x1[0] = x - this.ladox/2;  y1[0] = y + this.ladoy/2;
+        x1[1] = x + this.ladox/2;  y1[1] = y + this.ladoy/2;
+        x1[2] = x + this.ladox/2;  y1[2] = y - this.ladoy/2;
+        x1[3] = x - this.ladox/2;  y1[3] = y - this.ladoy/2;
+        
+        
+        setPontos(x1,y1);
     }
 }

@@ -94,4 +94,8 @@ public class Ponto extends Figura
         
         return false;
     }
+    
+    public void move (int x, int y){
+    
+    }
 }

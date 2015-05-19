@@ -83,7 +83,7 @@ public class Linha extends Figura {
     }
     
     public boolean cliquePertence (int x, int y){
-        int HIT_BOX_SIZE = 4;
+        int HIT_BOX_SIZE = 5;
         int boxX = x - HIT_BOX_SIZE / 2;
         int boxY = y - HIT_BOX_SIZE / 2;
         int width = HIT_BOX_SIZE;
@@ -98,5 +98,33 @@ public class Linha extends Figura {
         }
         
         return false;
+    }
+    
+    public void move (int x, int y){
+        Ponto ponto_aux = new Ponto (x, y);
+        if(this.p2.getY() > this.p1.getY()){
+            if(this.p2.getX() > this.p1.getX()){
+                //1º quadrante (centro no p1)
+                ponto_aux.setX(x + (int)Math.abs(x - this.p1.getX()));
+                ponto_aux.setY(y + (int)Math.abs(y - this.p1.getY()));
+            }
+            else{
+                //2º quadrante
+                ponto_aux.setX(x + (int)Math.abs(x - this.p1.getX()));
+                ponto_aux.setY(y + (int)Math.abs(y - this.p1.getY()));
+            }
+        }
+        else{
+            if(this.p2.getX() < this.p1.getX()){
+                //3º quadrante
+                ponto_aux.setX(x + (int)Math.abs(x - this.p1.getX()));
+                ponto_aux.setY(y + (int)Math.abs(y - this.p1.getY()));
+            }
+            else{
+                //4º quadrante
+                ponto_aux.setX(x + (int)Math.abs(x - this.p1.getX()));
+                ponto_aux.setY(y + (int)Math.abs(y - this.p1.getY()));
+            }
+        }
     }
 }

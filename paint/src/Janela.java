@@ -269,7 +269,7 @@ public class Janela extends JFrame { // implements Cloneable
         btnSair.addActionListener (new ParedeDeJanela());
         
         btnSelect.addActionListener(new SelecionarImagem());
-        btnMover.addActionListener(new SelecionarImagem());
+        btnMover.addActionListener(new MoverImagem());
         btnUp.addActionListener(new Up ());
         btnDown.addActionListener(new Down ());
 
@@ -488,17 +488,18 @@ public class Janela extends JFrame { // implements Cloneable
         public void mouseClicked (MouseEvent e) {
             pnlDesenho.setFocusable(true);
             pnlDesenho.requestFocusInWindow();
+            
             if(esperaSelect){
                 for(int i = figuras.size()-1; i >= 0; i--){
                     p1 = new Ponto(e.getX(), e.getY());
-                    if(figuras.elementAt(i).cliquePertence(p1.getX(), p1.getY()) == true){
+                    if(figuras.elementAt(i).cliquePertence(p1.getX(), p1.getY())){
                         selecionado = i;
-                        System.out.println("Selecionada");   
+                        //esperaMover = true;
+                        System.out.println("Figura selecionada");
                         i = -1;
                     }
                 }
             }
-            
         }
         
         public void mouseEntered (MouseEvent e) {
@@ -508,6 +509,13 @@ public class Janela extends JFrame { // implements Cloneable
         }
         
         public void mouseDragged(MouseEvent e) {
+            if (esperaMover && esperaSelect) {
+                if(figuras.get(selecionado).cliquePertence(e.getX(), e.getY())){
+                    figuras.get(selecionado).move(e.getX(), e.getY());
+                    figuras.get(selecionado).torneSeVisivel(pnlDesenho.getGraphics());
+                    RepintaTela(0);
+                }
+            }
             if (desenhandoReta) {
                 RepintaTela();
                 esperaFimReta = true;
@@ -895,6 +903,17 @@ public class Janela extends JFrame { // implements Cloneable
         
         try {
             Thread.sleep(10);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        pnlDesenho.resize(pnlDesenho.getHeight()+1, pnlDesenho.getWidth()+1);
+        pnlDesenho.resize(pnlDesenho.getHeight()-1, pnlDesenho.getWidth()-1);
+    }
+    
+    private void RepintaTela(int x){
+        
+        try {
+            Thread.sleep(x);                 //1000 milliseconds is one second.
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }

@@ -36,4 +36,5 @@ public abstract class Figura // implements Cloneable
     public abstract String  toString       ();
     public abstract void    torneSeVisivel (Graphics g);
     public abstract boolean cliquePertence (int x, int y);
+    public abstract void    move           (int x, int y);
 }

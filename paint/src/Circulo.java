@@ -175,5 +175,9 @@ public class Circulo extends Figura {
             return false;
             
     }
-            
+    
+    public void move(int x, int y)    {
+    	this.setCentroX(x);
+    	this.setCentroY(y);
+    }
 }

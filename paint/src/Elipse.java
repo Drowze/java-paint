@@ -160,4 +160,8 @@ public class Elipse extends Figura {
         else
             return false;
     }
+    
+    public void move (int x, int y){
+        this.setCentro(x,y);
+    }
 }
