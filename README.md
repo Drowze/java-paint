@@ -1,4 +1,12 @@
 # java-paint
+
+**Compilando em terminal:  **
+```
+javac *.java  
+java -classpath . Editor  
+```
+
+---
 O objetivo deste trabalho é implementar em Java um Editor Gráfico simples, semelhante ao Paint que acompanha o sistema operacional Windows. Ele deverá ser desenvolvido em duplas que o entregarão em fases, conforme especificado abaixo.
 Para catalisar o desenvolvimento deste trabalho, fornecerei uma versão preliminar simplificada e funcional do programa desejado. Desta forma, seu trabalho consistirá de completar as funcionalidades já previstas no programa fornecido e agregar novas funcionalidades a ele.
 Segue a especificação de cada fase, bem como do prazo de entrega.
@@ -12,7 +20,7 @@ d) Implementar o desenho de elipse.
 Para escolher cor, usar JColorChooser.  
 
 
-**Fase II (entregar 5/mai):** 
+**Fase II (entregar 5/mai):**  
 a) Implementar o desenho de quadrado.  
 b) Implementar o desenho de retângulo.  
 c) Implementar o desenho de polígono.  
