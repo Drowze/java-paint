@@ -495,7 +495,7 @@ public class Janela extends JFrame { // implements Cloneable
                     if(figuras.elementAt(i).cliquePertence(p1.getX(), p1.getY())){
                         selecionado = i;
                         //esperaMover = true;
-                        System.out.println("Figura selecionada");
+                        statusBar1.setText("Mensagem: Figura selecionada");
                         i = -1;
                     }
                 }
@@ -518,54 +518,59 @@ public class Janela extends JFrame { // implements Cloneable
                     RepintaTela(0);
                 }
             }
-            if (desenhandoReta) {
-                RepintaTela();
-                esperaFimReta = true;
-                Graphics g = pnlDesenho.getGraphics();
-                
-                g.drawLine(e.getX(), e.getY(), p1.getX(), p1.getY());
-                
-            }
-            else
-                if(desenhandoCirculo){
-                    esperaFimCirculo = true;
-                    RepintaTela();
-
-                    Circulo bola = new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
-                
-                    bola.torneSeVisivel(pnlDesenho.getGraphics());
+            else 
+                if(esperaMover && !esperaSelect) { 
+                    statusBar1.setText("Mensagem: Selecione uma imagem primeiro");
                 }
                 else
-                    if (desenhandoElipse){
-                        esperaFimElipse = true;
+                    if (desenhandoReta) {
                         RepintaTela();
-
-                        Elipse ovo = new Elipse(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
-
-                        ovo.torneSeVisivel(pnlDesenho.getGraphics());
+                        esperaFimReta = true;
+                        Graphics g = pnlDesenho.getGraphics();
+                        
+                        g.drawLine(e.getX(), e.getY(), p1.getX(), p1.getY());
+                        
                     }
                     else
-                        if (desenhandoQuadrado){
-                            esperaFimQuadrado = true;
-                                    
-                            x[1] = e.getX();
-                            y[1] = e.getY();
-                            Quadrado quadradoDeDois = new Quadrado(x, y, corAtual, corAtualPreen);
-                            
-                            quadradoDeDois.torneSeVisivel(pnlDesenho.getGraphics());
+                        if(desenhandoCirculo){
+                            esperaFimCirculo = true;
                             RepintaTela();
+
+                            Circulo bola = new Circulo(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
+                        
+                            bola.torneSeVisivel(pnlDesenho.getGraphics());
                         }
                         else
-                            if (desenhandoRetangulo) {
-                                esperaFimRetangulo = true;
-
-                                x[1] = e.getX();
-                                y[1] = e.getY();
-                                Retangulo quadradoDiferente = new Retangulo (x, y, corAtual, corAtualPreen);
-
-                                quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
+                            if (desenhandoElipse){
+                                esperaFimElipse = true;
                                 RepintaTela();
+
+                                Elipse ovo = new Elipse(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual, corAtualPreen );
+
+                                ovo.torneSeVisivel(pnlDesenho.getGraphics());
                             }
+                            else
+                                if (desenhandoQuadrado){
+                                    esperaFimQuadrado = true;
+                                            
+                                    x[1] = e.getX();
+                                    y[1] = e.getY();
+                                    Quadrado quadradoDeDois = new Quadrado(x, y, corAtual, corAtualPreen);
+                                    
+                                    quadradoDeDois.torneSeVisivel(pnlDesenho.getGraphics());
+                                    RepintaTela();
+                                }
+                                else
+                                    if (desenhandoRetangulo) {
+                                        esperaFimRetangulo = true;
+
+                                        x[1] = e.getX();
+                                        y[1] = e.getY();
+                                        Retangulo quadradoDiferente = new Retangulo (x, y, corAtual, corAtualPreen);
+
+                                        quadradoDiferente.torneSeVisivel(pnlDesenho.getGraphics());
+                                        RepintaTela();
+                                    }
         }
 
         public void mouseMoved(MouseEvent e) {
