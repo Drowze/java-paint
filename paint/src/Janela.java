@@ -45,8 +45,9 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioElipse, esperaFimElipse, desenhandoElipse,
             esperaInicioQuadrado, esperaFimQuadrado, desenhandoQuadrado,
             esperaInicioRetangulo, esperaFimRetangulo, desenhandoRetangulo,
-            esperaInicioPoligono, esperaFimPoligono, desenhandoPoligono;
+            esperaInicioPol, esperaFimPol, desenhandoPoligono;
 
+    private String stringTexto = null, stringFont = null;
     private Color corAtual = Color.black;
     private Color corAtualPreen = new Color(0,0,0,0);
     private Ponto p1;
@@ -54,6 +55,7 @@ public class Janela extends JFrame { // implements Cloneable
     int y[] = new int[90];
     int xDragged, yDragged;
     int selecionado;
+    int vertices, vezesverices;
     
     private Vector<Figura> figuras = new Vector<Figura>();
     private Vector<Figura> aux = new Vector<Figura>();
@@ -404,22 +406,41 @@ public class Janela extends JFrame { // implements Cloneable
                                     statusBar1.setText("Mensagem: solte o mouse no ponto final do retangulo");    
                                 }
                                 else //Consertar Polígono
-                                    if (esperaInicioPoligono) {
-                                        esperaInicioPoligono = false;
-                                        //desenhandoPoligono = true;
-
-                                        p1 = new Ponto (e.getX(), e.getY(), corAtual);
-
-                                        statusBar1.setText("Mensagem: clique o ponto final do poligono");    
+                                    if(esperaInicioPol){
+                                        System.out.println("entrou poli");
+                                        esperaInicioPol = false;
+                                        desenhandoPoligono = true;
+                                        esperaFimPol = false;
+                                        p1 = new Ponto (e.getX(), e.getY(), corAtual, corAtualPreen);
+                                        stringTexto = JOptionPane.showInputDialog(null, "Número de vertices", "Números Vértices:", JOptionPane.PLAIN_MESSAGE);
+                                        x[0] = p1.getX();
+                                        y[0] = p1.getY();
+                                        vertices = Integer.parseInt(stringTexto);
+                                        vezesverices = 1;
+                                        statusBar1.setText("Mensagem: clique o ponto final do poligono");       
                                     }
                                     else
-                                        if (esperaFimPoligono) {
-                                            esperaFimPoligono = false;
-
-                                            figuras.add (new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual));
-                                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-
-                                            statusBar1.setText("Mensagem:");    
+                                        if(desenhandoPoligono){
+                                            esperaInicioPol = false;
+                                            esperaFimPol = false;
+                                            if(vezesverices < vertices){
+                                                p1 = new Ponto (e.getX(), e.getY(), corAtual, corAtualPreen);
+                                               
+                                                x[vezesverices] = p1.getX();
+                                                y[vezesverices] = p1.getY();
+                                                vezesverices++;
+                                                System.out.println("passou ponto");
+                                            }
+                                            if(vezesverices == vertices){
+                                                System.out.println("saiu poli");
+                                                esperaInicioPol = false;
+                                                figuras.add (new Poligono(x, y, vertices, corAtual, corAtualPreen));
+                                                figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                                                statusBar1.setText("Mensagem:");
+                                                desenhandoPoligono = false;
+                                                esperaInicioPol = true;
+                                                //salvo1 = false;
+                                            }
                                         }
         }
         
@@ -512,11 +533,9 @@ public class Janela extends JFrame { // implements Cloneable
             pnlDesenho.setFocusable(true);
             pnlDesenho.requestFocusInWindow();
             if (esperaMover && esperaSelect) {
-                if(figuras.get(selecionado).cliquePertence(e.getX(), e.getY())){
                     figuras.get(selecionado).move(e.getX(), e.getY());
                     figuras.get(selecionado).torneSeVisivel(pnlDesenho.getGraphics());
                     RepintaTela(0);
-                }
             }
             else 
                 if(esperaMover && !esperaSelect) { 
@@ -612,8 +631,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false;
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o local do ponto desejado");
         }
@@ -637,8 +656,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false;
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o ponto inicial da reta");
         }
@@ -662,8 +681,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false;
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o ponto central do circulo");
         }
@@ -687,8 +706,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false;         
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da Elipse");
         }
@@ -712,8 +731,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false;     
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
             
 
             statusBar1.setText("Mensagem: clique o ponto central da quadrado");
@@ -738,8 +757,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = true;
             esperaFimRetangulo = false; 
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
@@ -763,8 +782,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false; 
-            esperaInicioPoligono = true;
-            esperaFimPoligono = false;
+            esperaInicioPol = true;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
@@ -788,8 +807,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false; 
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem: clique para selecionar");
         }
@@ -813,8 +832,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimQuadrado = false;
             esperaInicioRetangulo = false;
             esperaFimRetangulo = false; 
-            esperaInicioPoligono = false;
-            esperaFimPoligono = false;
+            esperaInicioPol = false;
+            esperaFimPol = false;
 
             statusBar1.setText("Mensagem:");
         }
