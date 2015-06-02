@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.*;
-import java.lang.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Janela extends JFrame { // implements Cloneable
 
@@ -45,7 +45,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaInicioElipse, esperaFimElipse, desenhandoElipse,
             esperaInicioQuadrado, esperaFimQuadrado, desenhandoQuadrado,
             esperaInicioRetangulo, esperaFimRetangulo, desenhandoRetangulo,
-            esperaInicioPol, esperaFimPol, desenhandoPoligono;
+            esperaInicioPol, esperaFimPol, desenhandoPoligono, 
+            esperaInicioTexto, esperaFimTexto;
 
     private String stringTexto = null, stringFont = null;
     private Color corAtual = Color.black;
@@ -56,6 +57,8 @@ public class Janela extends JFrame { // implements Cloneable
     int xDragged, yDragged;
     int selecionado;
     int vertices, vezesverices;
+    private int size, style;
+    private Font  fonteTXT1;
     
     private Vector<Figura> figuras = new Vector<Figura>();
     private Vector<Figura> aux = new Vector<Figura>();
@@ -265,7 +268,7 @@ public class Janela extends JFrame { // implements Cloneable
         btnQuadrado.addActionListener(new DesenhoDeQuadrado());
         btnRetangulo.addActionListener(new DesenhoDeRetangulo());
         btnPoligono.addActionListener(new DesenhoDePoligono());
-        //btnEscrita.addActionListener(new CaixaDeEscrita());
+        btnEscrita.addActionListener(new EscreveTexto());
         btnCores.addActionListener(new EscolhaCorContorno());
         btnPreen.addActionListener(new EscolhaCorPreenchimento());
         btnSair.addActionListener (new ParedeDeJanela());
@@ -442,6 +445,16 @@ public class Janela extends JFrame { // implements Cloneable
                                                 //salvo1 = false;
                                             }
                                         }
+                                        else
+                                            if(esperaInicioTexto){
+                                                esperaInicioTexto = true;
+                                                p1 = new Ponto (e.getX(), e.getY(), corAtual, corAtualPreen);
+                                                stringTexto = JOptionPane.showInputDialog(null, "Texto:", "Digite alguma coisa", JOptionPane.PLAIN_MESSAGE);
+                                                figuras.add (new Text(p1.getX(), p1.getY(), stringTexto, corAtual, corAtualPreen, fonteTXT1));
+                                                figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                                                statusBar1.setText("Mensagem: Digite o texto a ser exibido");
+                                            }
+            
         }
         
         public void mouseReleased (MouseEvent e) {
@@ -633,6 +646,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false;
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o local do ponto desejado");
         }
@@ -658,6 +673,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false;
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o ponto inicial da reta");
         }
@@ -683,6 +700,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false;
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o ponto central do circulo");
         }
@@ -708,6 +727,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false;         
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da Elipse");
         }
@@ -733,6 +754,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false;     
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
             
 
             statusBar1.setText("Mensagem: clique o ponto central da quadrado");
@@ -759,6 +782,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false; 
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
@@ -784,6 +809,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false; 
             esperaInicioPol = true;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique o ponto central da retangulo");
         }
@@ -809,6 +836,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false; 
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem: clique para selecionar");
         }
@@ -834,6 +863,8 @@ public class Janela extends JFrame { // implements Cloneable
             esperaFimRetangulo = false; 
             esperaInicioPol = false;
             esperaFimPol = false;
+            esperaInicioTexto = false;
+            esperaFimTexto    = false;
 
             statusBar1.setText("Mensagem:");
         }
@@ -904,7 +935,10 @@ public class Janela extends JFrame { // implements Cloneable
                 int returnVal = j.showSaveDialog(Janela.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     try {
-                        FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                        String arquivo = j.getSelectedFile().getAbsolutePath();
+                    if(!arquivo.endsWith(".paint"))
+                                    arquivo+=".paint";
+                    FileWriter fw = new FileWriter(arquivo);
                         for(int k = 0; k<figuras.size(); k++){
                             fw.write(figuras.elementAt(k).toString());
                             fw.write("\n");
@@ -952,12 +986,17 @@ public class Janela extends JFrame { // implements Cloneable
         public void actionPerformed(ActionEvent e)
         {
                 JFileChooser j= new JFileChooser();
+                j.setFileFilter(new FileNameExtensionFilter("Paint Files", "paint", ".paint"));    
+    	        j.setAcceptAllFileFilterUsed(false);   
                 
                
                 int returnVal = j.showSaveDialog(Janela.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
-                    FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                    String arquivo = j.getSelectedFile().getAbsolutePath();
+                    if(!arquivo.endsWith(".paint"))
+                                    arquivo+=".paint";
+                    FileWriter fw = new FileWriter(arquivo);
                     for(int k = 0; k<figuras.size(); k++){
                         fw.write(figuras.elementAt(k).toString());
                         fw.write("\n");
@@ -988,7 +1027,10 @@ public class Janela extends JFrame { // implements Cloneable
                 int returnVal = j.showSaveDialog(Janela.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     try {
-                        FileWriter fw = new FileWriter(j.getSelectedFile()+".paint");
+                        String arquivo = j.getSelectedFile().getAbsolutePath();
+                    if(!arquivo.endsWith(".paint"))
+                                    arquivo+=".paint";
+                    FileWriter fw = new FileWriter(arquivo);
                         for(int k = 0; k<figuras.size(); k++){
                             fw.write(figuras.elementAt(k).toString());
                             fw.write("\n");
@@ -1010,6 +1052,32 @@ public class Janela extends JFrame { // implements Cloneable
         }
     }
     
+    @SuppressWarnings("serial")//Deixa de lado os warinings da classe abaixo
+	private class EscreveTexto extends JFrame implements ActionListener
+    {
+        public void actionPerformed (ActionEvent e)    
+        {
+        	setCursor(new Cursor(Cursor.TEXT_CURSOR));
+            esperaPonto      = false;
+            esperaInicioReta = false;
+            esperaFimReta    = false;
+            esperaInicioCirculo = false;
+            esperaFimCirculo = false;
+            esperaInicioElipse = false;
+            esperaFimElipse = false;
+            esperaInicioRetangulo = false;
+            esperaFimRetangulo  = false;
+            esperaInicioQuadrado = false;
+            esperaFimQuadrado = false;
+            esperaInicioTexto = true;
+            esperaFimTexto    = false;
+            esperaInicioPol   = false;
+            esperaFimPol      = false;
+                                    
+            statusBar1.setText("Mensagem: ");
+        }
+    }
+    
     private class Abrir implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String p = "p";
@@ -1019,9 +1087,11 @@ public class Janela extends JFrame { // implements Cloneable
             String r = "r";
             String q = "q";
             String g = "g";
-            //String t = "t";
+            String t = "t";
             aberto = false;
             JFileChooser j= new JFileChooser();
+            j.setFileFilter(new FileNameExtensionFilter("Paint Files", "paint", ".paint"));    
+    	        j.setAcceptAllFileFilterUsed(false);   
             int returnVal = j.showOpenDialog(Janela.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -1130,21 +1200,21 @@ public class Janela extends JFrame { // implements Cloneable
                                         );
                             figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
                         }
- //                       if(t.equals(tipo)){
- //                           System.out.println("entrou texto");
- //                           int x = Integer.parseInt(scanner.next());
- //                           int y = Integer.parseInt(scanner.next());
- //                           String txt =  scanner.next();
- //                           Color cor1 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
- //                           Color cor2 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
- //                           int size = Integer.parseInt(scanner.next());
- //                           String family = scanner.next();
- //                           int style = Integer.parseInt(scanner.next());
- //                           Font fonte =  new Font (family, style, size);
- //
- //                           //figuras.add (new Texto(x, y, txt, cor1, cor2, fonte));
- //                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
- //                       }
+                        if(t.equals(tipo)){
+                            System.out.println("entrou texto");
+                            int x = Integer.parseInt(scanner.next());
+                            int y = Integer.parseInt(scanner.next());
+                            String txt =  scanner.next();
+                            Color cor1 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+                            Color cor2 = new Color(Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()), Integer.parseInt(scanner.next()));
+                            int size = Integer.parseInt(scanner.next());
+                            String family = scanner.next();
+                            int style = Integer.parseInt(scanner.next());
+                            Font fonte =  new Font (family, style, size);
+                            
+                            figuras.add (new Text(x, y, txt, cor1, cor2, fonte));
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
                         if(g.equals(tipo)){
                             int n = Integer.parseInt(scanner.next());
                             int x[] = new int[99], y[] = new int[99];
