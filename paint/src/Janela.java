@@ -1093,9 +1093,12 @@ public class Janela extends JFrame { // implements Cloneable
             j.setFileFilter(new FileNameExtensionFilter("Paint Files", "paint", ".paint"));    
     	        j.setAcceptAllFileFilterUsed(false);   
             int returnVal = j.showOpenDialog(Janela.this);
+            String arquivo = j.getSelectedFile().getAbsolutePath();
+            if(!arquivo.endsWith(".paint"))
+                                    arquivo+=".paint";
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
-                    Scanner scanner = new Scanner(new FileReader(j.getSelectedFile())).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
+                    Scanner scanner = new Scanner(new FileReader(arquivo)).useDelimiter("\\s*:\\s*|\\s*\n\\s*");
                     figuras.clear();
                     RepintaTela();
                     while (scanner.hasNext()) {
