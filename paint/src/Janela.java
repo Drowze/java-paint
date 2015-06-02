@@ -1018,6 +1018,7 @@ public class Janela extends JFrame { // implements Cloneable
             String el = "e";
             String r = "r";
             String q = "q";
+            String g = "g";
             //String t = "t";
             aberto = false;
             JFileChooser j= new JFileChooser();
@@ -1144,6 +1145,22 @@ public class Janela extends JFrame { // implements Cloneable
  //                           //figuras.add (new Texto(x, y, txt, cor1, cor2, fonte));
  //                           figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
  //                       }
+                        if(g.equals(tipo)){
+                            int n = Integer.parseInt(scanner.next());
+                            int x[] = new int[99], y[] = new int[99];
+                            for(int i = 0; i < n; i++){
+                                x[i] = Integer.parseInt(scanner.next());
+                                y[i] = Integer.parseInt(scanner.next());
+                            }
+                            figuras.add (new Poligono(x, y, n, new Color(Integer.parseInt(scanner.next()), 
+                                                                         Integer.parseInt(scanner.next()), 
+                                                                         Integer.parseInt(scanner.next())), 
+                                                               new Color(Integer.parseInt(scanner.next()), 
+                                                                         Integer.parseInt(scanner.next()), 
+                                                                         Integer.parseInt(scanner.next()), 
+                                                                         Integer.parseInt(scanner.next()))));
+                            figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                        }
                         System.out.println("fim");
                     }
                 }catch (Exception ex) {
