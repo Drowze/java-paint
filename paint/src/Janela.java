@@ -58,7 +58,7 @@ public class Janela extends JFrame { // implements Cloneable
     int selecionado;
     int vertices, vezesverices;
     private int size, style;
-    private Font  fonteTXT1;
+    private Font  fonteTXT1 = new Font("Arial", 0, 14);
     
     private Vector<Figura> figuras = new Vector<Figura>();
     private Vector<Figura> aux = new Vector<Figura>();
@@ -453,7 +453,10 @@ public class Janela extends JFrame { // implements Cloneable
                                                 figuras.add (new Text(p1.getX(), p1.getY(), stringTexto, corAtual, corAtualPreen, fonteTXT1));
                                                 figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
                                                 statusBar1.setText("Mensagem: Digite o texto a ser exibido");
+                                                String nova_string = figuras.get(figuras.size()-1).toString();
+                                                System.out.println(nova_string);
                                             }
+                                            
             
         }
         

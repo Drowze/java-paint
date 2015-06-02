@@ -131,7 +131,9 @@ public class Poligono extends Figura
             }
         }
         if(y < this.yis[0]){
-            for(int i=0;i<=this.vert;i++){
+            for
+                    
+                    (int i=0;i<=this.vert;i++){
                 this.yis[i] = this.yis[i]-8;
             }
         }
