@@ -1,7 +1,10 @@
 # java-paint
 
-**Compilando em terminal:**  
+Pseudo-paint made in Java for the Programming Paradigms module.
+
+**Compiling:**  
 ```
+cd paint/src
 javac *.java  
 java -classpath . Editor  
 ```
